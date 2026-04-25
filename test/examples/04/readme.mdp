@@ -1,0 +1,18 @@
+# Defining the code file encoding
+
+You can define the code file encoding with `encoding` attribute.
+Default - `'utf8'`.
+
+Source files:
+
+main.md:
+
+::include-code{file="fixtures/main.md" language=markdown}
+
+included1.bat:
+
+::include-code{file="fixtures/included1.bat" language=batchfile encoding=cp866}
+
+Remark output:
+
+::include-code{file="snapshots/output.md" language="markdown"}

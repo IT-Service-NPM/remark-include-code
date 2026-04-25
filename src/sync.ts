@@ -5,6 +5,7 @@ import type { Root, Code } from 'mdast';
 import remarkDirective from 'remark-directive';
 import type { VFile } from 'vfile';
 import { VFileMessage } from 'vfile-message';
+import iconv from 'iconv-lite';
 import {
   getIncludeDirectives, getAttributes,
   assertFileDirnameIsDefined, processFileError
@@ -37,7 +38,8 @@ export function remarkIncludeCode(
         const includedFilePath = path.resolve(fileDirname, attributes.file);
         let includedFileContent = '';
         try {
-          includedFileContent = readFileSync(includedFilePath, 'utf8');
+          const buffer = readFileSync(includedFilePath);
+          includedFileContent = iconv.decode(buffer, attributes.encoding);
         } catch (error) {
           processFileError(file, includeDirective.node, attributes, error);
         };

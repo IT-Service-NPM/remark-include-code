@@ -2,11 +2,13 @@ import type { Root, Parent } from 'mdast';
 import type { LeafDirective } from 'mdast-util-directive';
 import type { VFile } from 'vfile';
 import { visit } from 'unist-util-visit';
+import iconv from 'iconv-lite';
 
 export interface DirectiveAttributes {
   file: string;
   optional: boolean;
   language: string;
+  encoding: iconv.Encoding;
 }
 
 export interface DirectiveInfo {
@@ -82,7 +84,8 @@ export function getAttributes(
   const attributes: DirectiveAttributes = {
     file: '',
     optional: false,
-    language: ''
+    language: '',
+    encoding: 'utf8'
   };
 
   if (!(
@@ -117,6 +120,16 @@ export function getAttributes(
 
   if (typeof node.attributes.language === 'string') {
     attributes.language = node.attributes.language;
+  }
+
+  if (typeof node.attributes.encoding === 'string') {
+    if (!iconv.encodingExists(node.attributes.encoding)) {
+      file.fail(
+        `::include-code, unknown encoding "${node.attributes.encoding as string}"`,
+        node
+      );
+    }
+    attributes.encoding = node.attributes.encoding;
   }
 
   const unexpectedAttributes = Object.keys(node.attributes)
