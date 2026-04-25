@@ -12,6 +12,8 @@ export interface DirectiveAttributes {
   language: string;
   encoding: iconv.Encoding;
   trimFinalNewline: boolean;
+  fromLine?: number;
+  toLine?: number;
 }
 
 export interface DirectiveInfo {
@@ -79,7 +81,7 @@ export function assertFileDirnameIsDefined(
  *
  * @internal
  */
-// eslint-disable-next-line max-statements
+// eslint-disable-next-line max-statements, sonarjs/cognitive-complexity
 export function getAttributes(
   file: VFile,
   node: LeafDirective,
@@ -91,7 +93,7 @@ export function getAttributes(
     optional: false,
     language: '',
     encoding: 'utf8',
-    'trimFinalNewline': false
+    trimFinalNewline: false
   };
 
   if (!(
@@ -160,6 +162,25 @@ export function getAttributes(
       processorData.settings?.includeCodeSettings?.trimFinalNewline ?? false;
   }
 
+  if (typeof node.attributes.fromLine === 'string') {
+    if (!Number.isInteger(Number(node.attributes.fromLine))) {
+      file.fail(
+        `::include-code, \`fromLine\` attribute invalid value "${node.attributes.fromLine}"`,
+        node
+      );
+    }
+    attributes.fromLine = Number(node.attributes.fromLine);
+  }
+  if (typeof node.attributes.toLine === 'string') {
+    if (!Number.isInteger(Number(node.attributes.toLine))) {
+      file.fail(
+        `::include-code, \`toLine\` attribute invalid value "${node.attributes.toLine}"`,
+        node
+      );
+    }
+    attributes.toLine = Number(node.attributes.toLine);
+  }
+
   const unexpectedAttributes = Object.keys(node.attributes)
     .filter((attribute) => !(Object.keys(attributes).includes(attribute)));
   if (unexpectedAttributes.length > 0) {
@@ -226,5 +247,10 @@ export function processCodeFileContent(
   if (attributes.trimFinalNewline) {
     textContent = textContent.replace(/\n$/, '');
   };
-  return textContent;
+  let contentLines = textContent.split('\n');
+  const firstLine = (attributes.fromLine ?? 1) - 1;
+  const lastLine = attributes.toLine ?? contentLines.length;
+  contentLines = contentLines.slice(firstLine, lastLine);
+  const result = contentLines.join('\n');
+  return result;
 }

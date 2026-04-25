@@ -1,0 +1,18 @@
+# Inserting a specified range of lines from a file
+
+You can insert a specified range of lines from a file
+with `fromLine` and `toLine` attributes.
+
+Source files:
+
+main.md:
+
+::include-code{file="fixtures/main.md" language=markdown}
+
+included.ts:
+
+::include-code{file="fixtures/included.ts" language=typescript}
+
+Remark output:
+
+::include-code{file="snapshots/output.md" language="markdown"}

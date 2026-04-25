@@ -93,6 +93,7 @@ There are two plugins: `remarkIncludeCode` (preferred) and `remarkIncludeCodeSy
   - [Defining the code language](#defining-the-codelanguage)
   - [Defining the code file encoding](#defining-the-code-fileencoding)
   - [Trim final newline](#trim-final-newline)
+  - [Inserting a specified range of lines from a file](#inserting-a-specified-range-of-lines-from-afile)
 - [API](#api)
 - [License](#license)
 
@@ -368,6 +369,57 @@ export async function remarkDirectiveUsingExample(
 >
 > Package presets `remarkIncludeCodePreset` and `remarkIncludePresetSync`
 > enables `trimFinalNewline` setting by default.
+
+### Inserting a specified range of lines from a file
+
+You can insert a specified range of lines from a file
+with `fromLine` and `toLine` attributes.
+
+Source files:
+
+main.md:
+
+```markdown
+Hello. I am an main markdown file with `::include-code` directive.
+
+::include-code{file="./included.ts" language="typescript" fromLine=9 toLine=-1}
+
+_That_ should do it!
+
+```
+
+included.ts:
+
+```typescript
+import { remark } from 'remark';
+import * as vFile from 'to-vfile';
+import { remarkIncludeCodePreset } from '@it-service-npm/remark-include-code/async';
+import type { VFile } from 'vfile';
+
+export async function remarkDirectiveUsingExample(
+  filePath: string
+): Promise<VFile> {
+  return remark()
+    .use(remarkIncludeCodePreset)
+    .process(await vFile.read(filePath));
+};
+
+```
+
+Remark output:
+
+````markdown
+Hello. I am an main markdown file with `::include-code` directive.
+
+```typescript
+  return remark()
+    .use(remarkIncludeCodePreset)
+    .process(await vFile.read(filePath));
+```
+
+*That* should do it!
+
+````
 
 ## API
 
