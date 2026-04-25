@@ -39,7 +39,8 @@ export function remarkIncludeCode(
         let includedFileContent = '';
         try {
           const buffer = await readFile(includedFilePath);
-          includedFileContent = iconv.decode(buffer, attributes.encoding);
+          includedFileContent = iconv.decode(buffer, attributes.encoding)
+            .replaceAll(/\r?\n/g, '\n');
         } catch (error) {
           processFileError(file, includeDirective.node, attributes, error);
         };
