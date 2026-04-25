@@ -1,0 +1,92 @@
+---
+name: Continuous integration
+
+on:
+
+  push:
+    branches:
+      - main
+    paths:
+      - src/**
+      - package.json
+      - pnpm-lock.yaml
+      - tsconfig.json
+      - test/**
+      - eslint.config.mjs
+      - api-extractor.json
+      - .readme.md
+      - .github/workflows/ci.yml
+
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  actions: read
+  issues: write
+  pull-requests: write
+  checks: write
+
+jobs:
+  build:
+    permissions:
+      actions: read
+      contents: read
+    uses: ./.github/workflows/compile-package.yml
+    secrets: inherit
+
+  lint:
+    needs:
+      - build
+    permissions:
+      actions: read
+      contents: read
+      issues: write
+      pull-requests: write
+      statuses: write
+    uses: ./.github/workflows/lint-package.yml
+    secrets: inherit
+
+  test:
+    needs:
+      - build
+    permissions:
+      checks: write
+      pull-requests: write
+      contents: read
+      issues: read
+    uses: IT-Service-NPM/.github/.github/workflows/test-only-package.yml@main
+    secrets: inherit
+
+  test-result-publish:
+    needs:
+      - test
+    permissions:
+      checks: write
+      pull-requests: write
+      contents: read
+      issues: read
+    uses: IT-Service-NPM/.github/.github/workflows/publish-package-test-result.yml@main
+    secrets: inherit
+
+  npmJS:
+    needs:
+      - build
+      - test
+    environment: npm
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      deployments: write
+      contents: write
+      issues: write
+      pull-requests: write
+      id-token: write
+    steps:
+
+      - uses: IT-Service-NPM/.github/.github/actions/publish-package@main
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"

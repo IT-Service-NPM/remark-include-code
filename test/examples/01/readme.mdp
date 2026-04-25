@@ -1,0 +1,26 @@
+# Including the content of code files
+
+The `@it-service-npm/remark-include-code` package allows you
+to embed code files within your Markdown documents.
+
+Async plugin using example:
+
+::include-code{file=./example.ts}
+
+Source files:
+
+main.md:
+
+::include-code{file="fixtures/main.md"}
+
+included1.ts:
+
+::include-code{file="fixtures/included1.ts"}
+
+included 2.ts:
+
+::include-code{file="fixtures/included 2.ts"}
+
+Remark output:
+
+::include-code{file="snapshots/output.md"}

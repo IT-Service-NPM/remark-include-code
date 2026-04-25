@@ -1,0 +1,9 @@
+node_modules
+dist
+*.tsbuildinfo
+**/tsconfig.tsbuildinfo
+coverage/lcov.info
+test/results/**/*.xml
+test/results/*.xml
+temp
+*.tgz

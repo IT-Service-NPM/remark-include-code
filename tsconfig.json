@@ -1,0 +1,41 @@
+{
+	"files": [],
+	"include": [
+		"./test",
+		"./*.config.ts"
+	],
+	"references": [
+		{
+			"path": "./tsconfig.src.json"
+		}
+	],
+	"compilerOptions": {
+		"noEmit": true,
+		"allowImportingTsExtensions": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+		"target": "esnext",
+		"lib": [
+			"ESNext"
+		],
+		"allowJs": false,
+		"checkJs": false,
+		"resolveJsonModule": true,
+		"moduleDetection": "auto",
+		"module": "NodeNext",
+		"moduleResolution": "nodenext",
+		"isolatedModules": false,
+		"verbatimModuleSyntax": true,
+		"strict": true,
+		"noUncheckedIndexedAccess": true,
+		"noImplicitOverride": true,
+		"noEmitOnError": true,
+		"sourceMap": true,
+		"declaration": true,
+		"declarationMap": true,
+		"types": [
+			"node"
+		]
+	}
+}
