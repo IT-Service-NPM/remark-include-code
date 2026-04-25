@@ -60,14 +60,6 @@ syntax to include code to markdown.
 
 There are two plugins: `remarkIncludeCode` (preferred) and `remarkIncludeCodeSync`.
 
-> [!TIP]
-> This plugin has two named entry points:
->
-> - ‘sync’ ('@it-service-npm/remark-include-code/sync’)
-> - ‘async’ ('@it-service-npm/remark-include-code/async’)
->
-> With sync and async plugin function and preset.
-
 > [!IMPORTANT]
 > [`remark-directive`][] plugin expected before
 > `@it-service-npm/remark-include-code`.
@@ -84,6 +76,14 @@ There are two plugins: `remarkIncludeCode` (preferred) and `remarkIncludeCodeSy
 >   - `remarkDirective`
 
 [`remark-directive`]: https://www.npmjs.com/package/remark-directive
+
+> [!TIP]
+> This plugin has two named entry points:
+>
+> - ‘sync’ ('@it-service-npm/remark-include-code/sync’)
+> - ‘async’ ('@it-service-npm/remark-include-code/async’)
+>
+> With sync and async plugin function and preset.
 
 ## Contents
 
