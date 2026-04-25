@@ -11,7 +11,7 @@ export interface DirectiveAttributes {
   optional: boolean;
   language: string;
   encoding: iconv.Encoding;
-  'trim-final-newline': boolean;
+  trimFinalNewline: boolean;
 }
 
 export interface DirectiveInfo {
@@ -91,7 +91,7 @@ export function getAttributes(
     optional: false,
     language: '',
     encoding: 'utf8',
-    'trim-final-newline': false
+    'trimFinalNewline': false
   };
 
   if (!(
@@ -138,11 +138,11 @@ export function getAttributes(
     attributes.encoding = node.attributes.encoding;
   }
 
-  if (typeof node.attributes['trim-final-newline'] === 'string') {
-    switch (node.attributes['trim-final-newline']) {
+  if (typeof node.attributes.trimFinalNewline === 'string') {
+    switch (node.attributes.trimFinalNewline) {
       case '':
       case 'true': {
-        attributes['trim-final-newline'] = true;
+        attributes.trimFinalNewline = true;
         break;
       }
       case 'false': {
@@ -150,14 +150,14 @@ export function getAttributes(
       }
       default: {
         file.fail(
-          `::include-code, \`trim-final-newline\` attribute invalid value "${node.attributes['trim-final-newline']}"`,
+          `::include-code, \`trimFinalNewline\` attribute invalid value "${node.attributes.trimFinalNewline}"`,
           node
         );
       }
     };
   } else {
-    attributes['trim-final-newline'] =
-      processorData.settings?.includeCodeSettings?.['trim-final-newline'] ?? false;
+    attributes.trimFinalNewline =
+      processorData.settings?.includeCodeSettings?.trimFinalNewline ?? false;
   }
 
   const unexpectedAttributes = Object.keys(node.attributes)
@@ -223,7 +223,7 @@ export function processCodeFileContent(
 ): string {
   let textContent = iconv.decode(content, attributes.encoding)
     .replaceAll(/\r?\n/g, '\n');
-  if (attributes['trim-final-newline']) {
+  if (attributes.trimFinalNewline) {
     textContent = textContent.replace(/\n$/, '');
   };
   return textContent;

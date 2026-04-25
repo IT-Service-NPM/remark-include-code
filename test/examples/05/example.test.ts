@@ -7,7 +7,7 @@ import {
 
 await describe('remark-include-code', async () => {
 
-  await it('trim final newline with `trim-final-newline` attribute',
+  await it('trim final newline with `trimFinalNewline` attribute',
     async (t: TestContext) => {
       const _cwd = process.cwd();
       try {
@@ -31,7 +31,7 @@ await describe('remark-include-code', async () => {
     }
   );
 
-  await it('trim final newline with `trim-final-newline` setting',
+  await it('trim final newline with `trimFinalNewline` setting',
     async (t: TestContext) => {
       const _cwd = process.cwd();
       try {

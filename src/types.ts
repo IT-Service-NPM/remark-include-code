@@ -13,7 +13,7 @@ declare module 'unified' {
        *
        * @public
        */
-      'trim-final-newline'?: boolean
+      trimFinalNewline?: boolean
     }
   }
 

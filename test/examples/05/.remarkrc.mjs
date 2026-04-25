@@ -9,7 +9,7 @@ export default {
   settings: {
     bullet: '-',
     includeCodeSettings: {
-      'trim-final-newline': true
+      trimFinalNewline: true
     }
   }
 }

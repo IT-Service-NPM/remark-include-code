@@ -276,7 +276,7 @@ echo "Кириллический текст"
 
 ### Trim final newline
 
-You can trim final newline with `trim-final-newline` attribute.
+You can trim final newline with `trimFinalNewline` attribute.
 
 Source files:
 
@@ -285,7 +285,7 @@ main.md:
 ```markdown
 Hello. I am an main markdown file with `::include-code` directive.
 
-::include-code{file="./included1.ts" language="typescript" trim-final-newline}
+::include-code{file="./included1.ts" language="typescript" trimFinalNewline}
 
 _That_ should do it!
 
@@ -316,7 +316,7 @@ export function inFileWithFinalNewline(): void {
 ````
 
 And You can trim final newline for all `::include-code` directives with
-remark settings without `trim-final-newline` attribute.
+remark settings without `trimFinalNewline` attribute.
 
 Remark settings (.remarkrc.mjs):
 
@@ -332,7 +332,7 @@ export default {
   settings: {
     bullet: '-',
     includeCodeSettings: {
-      'trim-final-newline': true
+      trimFinalNewline: true
     }
   }
 }
@@ -356,7 +356,7 @@ export async function remarkDirectiveUsingExample(
     .use({
       settings: {
         includeCodeSettings: {
-          'trim-final-newline': true
+          trimFinalNewline: true
         }
       }
     })
@@ -367,7 +367,7 @@ export async function remarkDirectiveUsingExample(
 > \[!IMPORTANT]
 >
 > Package presets `remarkIncludeCodePreset` and `remarkIncludePresetSync`
-> enables `trim-final-newline` setting by default.
+> enables `trimFinalNewline` setting by default.
 
 ## API
 

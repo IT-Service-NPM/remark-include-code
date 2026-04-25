@@ -1,5 +1,5 @@
 Hello. I am an main markdown file with `::include-code` directive.
 
-::include-code{file="./included1.ts" language="typescript" trim-final-newline}
+::include-code{file="./included1.ts" language="typescript" trimFinalNewline}
 
 _That_ should do it!

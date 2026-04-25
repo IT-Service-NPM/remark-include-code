@@ -13,7 +13,7 @@ export async function remarkDirectiveUsingExample(
     .use({
       settings: {
         includeCodeSettings: {
-          'trim-final-newline': true
+          trimFinalNewline: true
         }
       }
     })

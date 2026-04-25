@@ -1,23 +1,23 @@
 # Trim final newline
 
-You can trim final newline with `trim-final-newline` attribute.
+You can trim final newline with `trimFinalNewline` attribute.
 
 Source files:
 
 main.md:
 
-::include-code{file="fixtures/main.md" language="markdown" trim-final-newline=false}
+::include-code{file="fixtures/main.md" language="markdown" trimFinalNewline=false}
 
 included1.ts:
 
-::include-code{file="fixtures/included1.ts" language="typescript" trim-final-newline=false}
+::include-code{file="fixtures/included1.ts" language="typescript" trimFinalNewline=false}
 
 Remark output:
 
-::include-code{file="snapshots/output.md" language="markdown" trim-final-newline=false}
+::include-code{file="snapshots/output.md" language="markdown" trimFinalNewline=false}
 
 And You can trim final newline for all `::include-code` directives with
-remark settings without `trim-final-newline` attribute.
+remark settings without `trimFinalNewline` attribute.
 
 Remark settings (.remarkrc.mjs):
 
@@ -30,4 +30,4 @@ or without config file:
 > [!IMPORTANT]
 >
 > Package presets `remarkIncludeCodePreset` and `remarkIncludePresetSync`
-> enables `trim-final-newline` setting by default.
+> enables `trimFinalNewline` setting by default.

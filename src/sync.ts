@@ -85,7 +85,7 @@ export const remarkIncludeCodePreset: Preset = {
   ],
   settings: {
     includeCodeSettings: {
-      'trim-final-newline': true
+      trimFinalNewline: true
     }
   }
 };
