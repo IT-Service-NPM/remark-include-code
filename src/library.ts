@@ -5,7 +5,8 @@ import { visit } from 'unist-util-visit';
 
 export interface DirectiveAttributes {
   file: string;
-  optional: boolean
+  optional: boolean;
+  language: string;
 }
 
 export interface DirectiveInfo {
@@ -80,7 +81,8 @@ export function getAttributes(
 
   const attributes: DirectiveAttributes = {
     file: '',
-    optional: false
+    optional: false,
+    language: ''
   };
 
   if (!(
@@ -111,6 +113,10 @@ export function getAttributes(
         );
       }
     };
+  }
+
+  if (typeof node.attributes.language === 'string') {
+    attributes.language = node.attributes.language;
   }
 
   const unexpectedAttributes = Object.keys(node.attributes)

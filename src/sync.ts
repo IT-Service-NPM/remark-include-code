@@ -43,6 +43,7 @@ export function remarkIncludeCode(
         };
         includedContent = [{
           type: 'code',
+          lang: attributes.language,
           value: includedFileContent
         }];
       } catch (error) {

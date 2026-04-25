@@ -1,0 +1,17 @@
+# Defining the code language
+
+You can define the code language with `language` attribute.
+
+Source files:
+
+main.md:
+
+::include-code{file="fixtures/main.md" language=markdown}
+
+included1.ts:
+
+::include-code{file="fixtures/included1.ts" language=typescript}
+
+Remark output:
+
+::include-code{file="snapshots/output.md" language="markdown"}
