@@ -5,11 +5,12 @@ import type { Root, Code } from 'mdast';
 import remarkDirective from 'remark-directive';
 import type { VFile } from 'vfile';
 import { VFileMessage } from 'vfile-message';
-import iconv from 'iconv-lite';
 import {
   getIncludeDirectives, getAttributes,
-  assertFileDirnameIsDefined, processFileError
+  assertFileDirnameIsDefined,
+  processFileError, processCodeFileContent
 } from './library.js';
+import './types.js';
 
 /**
  * Async Remark plugin fabric function.
@@ -27,6 +28,8 @@ export function remarkIncludeCode(
   this: Processor
 ): Transformer<Root> {
 
+  const processor: Processor = this;
+
   return async function (tree: Root, file: VFile): Promise<Root> {
     const includeDirectives = getIncludeDirectives(tree, file);
     assertFileDirnameIsDefined(file);
@@ -34,13 +37,16 @@ export function remarkIncludeCode(
     for (const includeDirective of includeDirectives) {
       let includedContent: Code[] = [];
       try {
-        const attributes = getAttributes(file, includeDirective.node);
+        const attributes = getAttributes(
+          file, includeDirective.node, processor.data()
+        );
         const includedFilePath = path.resolve(fileDirname, attributes.file);
         let includedFileContent = '';
         try {
           const buffer = await readFile(includedFilePath);
-          includedFileContent = iconv.decode(buffer, attributes.encoding)
-            .replaceAll(/\r?\n/g, '\n');
+          includedFileContent = processCodeFileContent(
+            file, includeDirective.node, attributes, buffer
+          );
         } catch (error) {
           processFileError(file, includeDirective.node, attributes, error);
         };
@@ -76,5 +82,10 @@ export const remarkIncludeCodePreset: Preset = {
   plugins: [
     remarkDirective,
     remarkIncludeCode
-  ]
+  ],
+  settings: {
+    includeCodeSettings: {
+      'trim-final-newline': true
+    }
+  }
 };

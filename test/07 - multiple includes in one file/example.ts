@@ -1,12 +1,14 @@
 import { remark } from 'remark';
 import * as vFile from 'to-vfile';
-import { remarkIncludeCodePresetSync } from '@it-service-npm/remark-include-code';
+import remarkDirective from 'remark-directive';
+import { remarkIncludeCode } from '@it-service-npm/remark-include-code/sync';
 import type { VFile } from 'vfile';
 
-export async function remarkDirectiveUsingExample(
+export function remarkDirectiveUsingExample(
   filePath: string
-): Promise<VFile> {
+): VFile {
   return remark()
-    .use(remarkIncludeCodePresetSync)
-    .process(await vFile.read(filePath));
+    .use(remarkDirective)
+    .use(remarkIncludeCode)
+    .processSync(vFile.readSync(filePath));
 };

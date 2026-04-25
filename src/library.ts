@@ -1,14 +1,17 @@
 import type { Root, Parent } from 'mdast';
 import type { LeafDirective } from 'mdast-util-directive';
+import type { Data } from 'unified';
 import type { VFile } from 'vfile';
 import { visit } from 'unist-util-visit';
 import iconv from 'iconv-lite';
+import './types.js';
 
 export interface DirectiveAttributes {
   file: string;
   optional: boolean;
   language: string;
   encoding: iconv.Encoding;
+  'trim-final-newline': boolean;
 }
 
 export interface DirectiveInfo {
@@ -76,16 +79,19 @@ export function assertFileDirnameIsDefined(
  *
  * @internal
  */
+// eslint-disable-next-line max-statements
 export function getAttributes(
   file: VFile,
-  node: LeafDirective
+  node: LeafDirective,
+  processorData: Data
 ): DirectiveAttributes {
 
   const attributes: DirectiveAttributes = {
     file: '',
     optional: false,
     language: '',
-    encoding: 'utf8'
+    encoding: 'utf8',
+    'trim-final-newline': false
   };
 
   if (!(
@@ -132,6 +138,28 @@ export function getAttributes(
     attributes.encoding = node.attributes.encoding;
   }
 
+  if (typeof node.attributes['trim-final-newline'] === 'string') {
+    switch (node.attributes['trim-final-newline']) {
+      case '':
+      case 'true': {
+        attributes['trim-final-newline'] = true;
+        break;
+      }
+      case 'false': {
+        break;
+      }
+      default: {
+        file.fail(
+          `::include-code, \`trim-final-newline\` attribute invalid value "${node.attributes['trim-final-newline']}"`,
+          node
+        );
+      }
+    };
+  } else {
+    attributes['trim-final-newline'] =
+      processorData.settings?.includeCodeSettings?.['trim-final-newline'] ?? false;
+  }
+
   const unexpectedAttributes = Object.keys(node.attributes)
     .filter((attribute) => !(Object.keys(attributes).includes(attribute)));
   if (unexpectedAttributes.length > 0) {
@@ -174,4 +202,29 @@ export function processFileError(
   } else {
     throw error;
   }
+}
+
+/**
+ * Code file content processing
+ *
+ * @param file - Current markdown file
+ * @param node - `::include-code` directive Node
+ * @param attributes - `::include-code` attributes
+ * @param content - file content
+ * @throws `VFileMessage`
+ *
+ * @internal
+ */
+export function processCodeFileContent(
+  file: VFile,
+  node: LeafDirective,
+  attributes: DirectiveAttributes,
+  content: Buffer<ArrayBuffer>
+): string {
+  let textContent = iconv.decode(content, attributes.encoding)
+    .replaceAll(/\r?\n/g, '\n');
+  if (attributes['trim-final-newline']) {
+    textContent = textContent.replace(/\n$/, '');
+  };
+  return textContent;
 }

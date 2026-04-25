@@ -10,5 +10,12 @@ export async function remarkDirectiveUsingExample(
   return remark()
     .use(remarkDirective)
     .use(remarkIncludeCode)
+    .use({
+      settings: {
+        includeCodeSettings: {
+          'trim-final-newline': true
+        }
+      }
+    })
     .process(await vFile.read(filePath));
 };

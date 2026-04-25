@@ -5,12 +5,12 @@ import { remarkDirectiveUsingExample } from './example.ts';
 await describe('remark-include-code', async () => {
 
   await it('must support multiple `::include-code{}` directives in single markdown file',
-    async (t: TestContext) => {
+    (t: TestContext) => {
       const _cwd = process.cwd();
       try {
         process.chdir(import.meta.dirname);
 
-        const outputFile = await remarkDirectiveUsingExample(
+        const outputFile = remarkDirectiveUsingExample(
           path.resolve(
             import.meta.dirname, 'fixtures',
             'main.md'
