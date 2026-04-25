@@ -13,6 +13,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.1](https://github.com/IT-Service-NPM/remark-include-code/compare/v1.2.0...v1.2.1) (2026-04-25)
+
+
+### Bug Fixes
+
+* rename `trimFinalNewline` attribute ([04ae754](https://github.com/IT-Service-NPM/remark-include-code/commit/04ae7547e661315bcf25254e30c5cd3c6489a4fc))
+
 # [1.2.0](https://github.com/IT-Service-NPM/remark-include-code/compare/v1.1.0...v1.2.0) (2026-04-25)
 
 
