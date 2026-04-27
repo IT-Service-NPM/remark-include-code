@@ -242,15 +242,21 @@ export function processCodeFileContent(
   attributes: DirectiveAttributes,
   content: Buffer<ArrayBuffer>
 ): string {
+
   let textContent = iconv.decode(content, attributes.encoding)
     .replaceAll(/\r?\n/g, '\n');
+
   if (attributes.trimFinalNewline) {
     textContent = textContent.replace(/\n$/, '');
   };
-  let contentLines = textContent.split('\n');
-  const firstLine = (attributes.fromLine ?? 1) - 1;
-  const lastLine = attributes.toLine ?? contentLines.length;
-  contentLines = contentLines.slice(firstLine, lastLine);
-  const result = contentLines.join('\n');
+
+  const contentLines = textContent.split('\n');
+  const result = contentLines
+    .slice(
+      (attributes.fromLine ?? 1) - 1,
+      attributes.toLine ?? contentLines.length
+    )
+    .join('\n');
+
   return result;
 }
