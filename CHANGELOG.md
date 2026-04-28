@@ -13,6 +13,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/IT-Service-NPM/remark-include-code/compare/v2.1.0...v2.2.0) (2026-04-28)
+
+
+### Features
+
+* replace tab by spaces (`tabWidth` attribute) ([c114c36](https://github.com/IT-Service-NPM/remark-include-code/commit/c114c36885008c987b709c731d5a181aa9d1cc3b))
+
 # [2.1.0](https://github.com/IT-Service-NPM/remark-include-code/compare/v2.0.0...v2.1.0) (2026-04-28)
 
 
