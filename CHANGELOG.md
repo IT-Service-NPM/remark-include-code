@@ -13,6 +13,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/IT-Service-NPM/remark-include-code/compare/v2.0.0...v2.1.0) (2026-04-28)
+
+
+### Features
+
+* `useEditorConfig` attribute and parameter ([196c1e2](https://github.com/IT-Service-NPM/remark-include-code/commit/196c1e2d63990353ede3d4f215074367992eed23))
+
 # [2.0.0](https://github.com/IT-Service-NPM/remark-include-code/compare/v1.3.0...v2.0.0) (2026-04-28)
 
 
