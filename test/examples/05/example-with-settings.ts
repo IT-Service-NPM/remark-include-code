@@ -9,13 +9,8 @@ export async function remarkDirectiveUsingExample(
 ): Promise<VFile> {
   return remark()
     .use(remarkDirective)
-    .use(remarkIncludeCode)
-    .use({
-      settings: {
-        includeCodeSettings: {
-          trimFinalNewline: true
-        }
-      }
+    .use(remarkIncludeCode, {
+      trimFinalNewline: true
     })
     .process(await vFile.read(filePath));
 };

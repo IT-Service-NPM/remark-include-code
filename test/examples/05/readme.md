@@ -40,7 +40,7 @@ export function inFileWithFinalNewline(): void {
 ````
 
 And You can trim final newline for all `::include-code` directives with
-remark settings without `trimFinalNewline` attribute.
+plugin options without `trimFinalNewline` attribute.
 
 Remark settings (.remarkrc.mjs):
 
@@ -51,13 +51,12 @@ import { remarkIncludeCode } from '@it-service-npm/remark-include-code/async';
 export default {
   plugins: [
     remarkDirective,
-    remarkIncludeCode,
+    [remarkIncludeCode, {
+      trimFinalNewline: true
+    }],
   ],
   settings: {
-    bullet: '-',
-    includeCodeSettings: {
-      trimFinalNewline: true
-    }
+    bullet: '-'
   }
 }
 ```
@@ -76,13 +75,8 @@ export async function remarkDirectiveUsingExample(
 ): Promise<VFile> {
   return remark()
     .use(remarkDirective)
-    .use(remarkIncludeCode)
-    .use({
-      settings: {
-        includeCodeSettings: {
-          trimFinalNewline: true
-        }
-      }
+    .use(remarkIncludeCode, {
+      trimFinalNewline: true
     })
     .process(await vFile.read(filePath));
 };

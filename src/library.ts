@@ -1,19 +1,56 @@
 import type { Root, Parent } from 'mdast';
 import type { LeafDirective } from 'mdast-util-directive';
-import type { Data } from 'unified';
 import type { VFile } from 'vfile';
 import { visit } from 'unist-util-visit';
 import iconv from 'iconv-lite';
-import './types.js';
 
-export interface DirectiveAttributes {
+/**
+ * Plugin parameters
+ */
+export interface Parameters {
+
+  /**
+   * Trim final newline in code
+   */
+  trimFinalNewline?: boolean;
+
+  /**
+   * Fail if file not found (false) or not (true)
+   */
+  optional?: boolean;
+
+}
+
+/**
+ * Directive attributes
+ */
+export interface DirectiveAttributes extends Required<Parameters> {
+
+  /**
+   * Code file path
+   */
   file: string;
-  optional: boolean;
+
+  /**
+   * Code language
+   */
   language: string;
+
+  /**
+   * Code file encoding
+   */
   encoding: iconv.Encoding;
-  trimFinalNewline: boolean;
+
+  /**
+   * First line of included range
+   */
   fromLine?: number;
+
+  /**
+   * Last line of included range
+   */
   toLine?: number;
+
 }
 
 export interface DirectiveInfo {
@@ -85,7 +122,7 @@ export function assertFileDirnameIsDefined(
 export function getAttributes(
   file: VFile,
   node: LeafDirective,
-  processorData: Data
+  parameters?: Parameters
 ): DirectiveAttributes {
 
   const attributes: DirectiveAttributes = {
@@ -158,8 +195,7 @@ export function getAttributes(
       }
     };
   } else {
-    attributes.trimFinalNewline =
-      processorData.settings?.includeCodeSettings?.trimFinalNewline ?? false;
+    attributes.trimFinalNewline = parameters?.trimFinalNewline ?? false;
   }
 
   if (typeof node.attributes.fromLine === 'string') {

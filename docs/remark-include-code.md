@@ -8,51 +8,6 @@ The `@it-service-npm/remark-include-code` package allows you to embed code files
 
 This plugin allows you to incorporate code into your markdown using the `::include-code{file="./included.ts"}` syntax.
 
-## Functions
-
-<table><thead><tr><th>
-
-Function
-
-
-</th><th>
-
-Description
-
-
-</th></tr></thead>
-<tbody><tr><td>
-
-[remarkIncludeCode(this)](./remark-include-code.remarkincludecode.md)
-
-
-</td><td>
-
-Async Remark plugin fabric function.
-
-The `@it-service-npm/remark-include-code` package allows you to embed code files within your Markdown documents.
-
-This plugin allows you to incorporate code into your markdown using the `::include-code{file="./included.ts"}` syntax.
-
-
-</td></tr>
-<tr><td>
-
-[remarkIncludeCodeSync(this)](./remark-include-code.remarkincludecodesync.md)
-
-
-</td><td>
-
-Sync Remark plugin fabric function.
-
-The `@it-service-npm/remark-include-code` package allows you to embed code files within your Markdown documents.
-
-This plugin allows you to incorporate code into your markdown using the `::include-code{file="./included.ts"}` syntax.
-
-
-</td></tr>
-</tbody></table>
-
 ## Variables
 
 <table><thead><tr><th>
@@ -68,6 +23,21 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
+[remarkIncludeCode](./remark-include-code.remarkincludecode.md)
+
+
+</td><td>
+
+Async Remark plugin fabric function.
+
+The `@it-service-npm/remark-include-code` package allows you to embed code files within your Markdown documents.
+
+This plugin allows you to incorporate code into your markdown using the `::include-code{file="./included.ts"}` syntax.
+
+
+</td></tr>
+<tr><td>
+
 [remarkIncludeCodePreset](./remark-include-code.remarkincludecodepreset.md)
 
 
@@ -75,7 +45,7 @@ Description
 
 Preset of Remark plugins:
 
-- [remarkIncludeCode()](./remark-include-code.remarkincludecode.md)
+- [remarkIncludeCode](./remark-include-code.remarkincludecode.md)
 
 - [remarkDirective](https://www.npmjs.com/package/remark-directive)
 
@@ -90,9 +60,24 @@ Preset of Remark plugins:
 
 Preset of Remark plugins:
 
-- [remarkIncludeCodeSync()](./remark-include-code.remarkincludecodesync.md)
+- [remarkIncludeCodeSync](./remark-include-code.remarkincludecodesync.md)
 
 - [remarkDirective](https://www.npmjs.com/package/remark-directive)
+
+
+</td></tr>
+<tr><td>
+
+[remarkIncludeCodeSync](./remark-include-code.remarkincludecodesync.md)
+
+
+</td><td>
+
+Sync Remark plugin fabric function.
+
+The `@it-service-npm/remark-include-code` package allows you to embed code files within your Markdown documents.
+
+This plugin allows you to incorporate code into your markdown using the `::include-code{file="./included.ts"}` syntax.
 
 
 </td></tr>

@@ -4,13 +4,16 @@
 
 ```ts
 
+import type { Plugin } from 'unified';
 import type { Preset } from 'unified';
-import type { Processor } from 'unified';
 import type { Root } from 'mdast';
-import type { Transformer } from 'unified';
 
+// Warning: (ae-forgotten-export) The symbol "Parameters_2" needs to be exported by the entry point index.d.ts
+//
 // @public
-export function remarkIncludeCode(this: Processor): Transformer<Root>;
+export const remarkIncludeCode: Plugin<[
+Parameters_2?
+], Root>;
 
 // @public
 const remarkIncludeCodePreset: Preset;
@@ -21,6 +24,8 @@ export { remarkIncludeCodePreset }
 export const remarkIncludeCodePresetSync: Preset;
 
 // @public
-export function remarkIncludeCodeSync(this: Processor): Transformer<Root>;
+export const remarkIncludeCodeSync: Plugin<[
+Parameters_2?
+], Root>;
 
 ```

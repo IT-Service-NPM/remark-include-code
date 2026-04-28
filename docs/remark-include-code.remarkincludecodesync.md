@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@it-service-npm/remark-include-code](./remark-include-code.md) &gt; [remarkIncludeCodeSync](./remark-include-code.remarkincludecodesync.md)
 
-## remarkIncludeCodeSync() function
+## remarkIncludeCodeSync variable
 
 Sync Remark plugin fabric function.
 
@@ -13,44 +13,7 @@ This plugin allows you to incorporate code into your markdown using the `::inclu
 **Signature:**
 
 ```typescript
-export declare function remarkIncludeCode(this: Processor): Transformer<Root>;
+remarkIncludeCode: Plugin<[
+    Parameters?
+], Root>
 ```
-
-## Parameters
-
-<table><thead><tr><th>
-
-Parameter
-
-
-</th><th>
-
-Type
-
-
-</th><th>
-
-Description
-
-
-</th></tr></thead>
-<tbody><tr><td>
-
-this
-
-
-</td><td>
-
-Processor
-
-
-</td><td>
-
-
-</td></tr>
-</tbody></table>
-
-**Returns:**
-
-Transformer&lt;Root&gt;
-

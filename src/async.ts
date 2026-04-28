@@ -1,16 +1,16 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
-import type { Transformer, Preset, Processor } from 'unified';
+import type { Transformer, Preset, Processor, Plugin } from 'unified';
 import type { Root, Code } from 'mdast';
 import remarkDirective from 'remark-directive';
 import type { VFile } from 'vfile';
 import { VFileMessage } from 'vfile-message';
 import {
+  type Parameters,
   getIncludeDirectives, getAttributes,
   assertFileDirnameIsDefined,
   processFileError, processCodeFileContent
 } from './library.js';
-import './types.js';
 
 /**
  * Async Remark plugin fabric function.
@@ -24,50 +24,54 @@ import './types.js';
  *
  * @public
  */
-export function remarkIncludeCode(
-  this: Processor
+export const remarkIncludeCode: Plugin<
+  [Parameters?],
+  Root
+> = function (
+  this: Processor,
+  parameters?: Parameters
 ): Transformer<Root> {
 
-  const processor: Processor = this;
+    // const processor: Processor = this;
 
-  return async function (tree: Root, file: VFile): Promise<Root> {
-    const includeDirectives = getIncludeDirectives(tree, file);
-    assertFileDirnameIsDefined(file);
-    const fileDirname = path.resolve(file.dirname);
-    for (const includeDirective of includeDirectives) {
-      let includedContent: Code[] = [];
-      try {
-        const attributes = getAttributes(
-          file, includeDirective.node, processor.data()
-        );
-        const includedFilePath = path.resolve(fileDirname, attributes.file);
-        let includedFileContent = '';
+    return async function (tree: Root, file: VFile): Promise<Root> {
+      const includeDirectives = getIncludeDirectives(tree, file);
+      assertFileDirnameIsDefined(file);
+      const fileDirname = path.resolve(file.dirname);
+      for (const includeDirective of includeDirectives) {
+        let includedContent: Code[] = [];
         try {
-          const buffer = await readFile(includedFilePath);
-          includedFileContent = processCodeFileContent(
-            file, includeDirective.node, attributes, buffer
+          const attributes = getAttributes(
+            file, includeDirective.node, parameters
           );
+          const includedFilePath = path.resolve(fileDirname, attributes.file);
+          let includedFileContent = '';
+          try {
+            const buffer = await readFile(includedFilePath);
+            includedFileContent = processCodeFileContent(
+              file, includeDirective.node, attributes, buffer
+            );
+          } catch (error) {
+            processFileError(file, includeDirective.node, attributes, error);
+          };
+          includedContent = [{
+            type: 'code',
+            lang: attributes.language,
+            value: includedFileContent
+          }];
         } catch (error) {
-          processFileError(file, includeDirective.node, attributes, error);
-        };
-        includedContent = [{
-          type: 'code',
-          lang: attributes.language,
-          value: includedFileContent
-        }];
-      } catch (error) {
-        if (!((error instanceof VFileMessage) && (!error.fatal))) {
-          throw error;
+          if (!((error instanceof VFileMessage) && (!error.fatal))) {
+            throw error;
+          }
         }
+        includeDirective.parent.children.splice(
+          includeDirective.index, 1,
+          ...includedContent
+        );
       }
-      includeDirective.parent.children.splice(
-        includeDirective.index, 1,
-        ...includedContent
-      );
-    }
-    return tree;
+      return tree;
+    };
   };
-};
 
 /**
  * Preset of Remark plugins:
@@ -81,11 +85,8 @@ export function remarkIncludeCode(
 export const remarkIncludeCodePreset: Preset = {
   plugins: [
     remarkDirective,
-    remarkIncludeCode
-  ],
-  settings: {
-    includeCodeSettings: {
+    [remarkIncludeCode, {
       trimFinalNewline: true
-    }
-  }
+    }]
+  ]
 };

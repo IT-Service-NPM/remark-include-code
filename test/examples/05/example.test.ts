@@ -31,7 +31,7 @@ await describe('remark-include-code', async () => {
     }
   );
 
-  await it('trim final newline with `trimFinalNewline` setting',
+  await it('trim final newline with `trimFinalNewline` plugin parameter',
     async (t: TestContext) => {
       const _cwd = process.cwd();
       try {

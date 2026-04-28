@@ -17,7 +17,7 @@ Remark output:
 ::include-code{file="snapshots/output.md" language="markdown" trimFinalNewline=false}
 
 And You can trim final newline for all `::include-code` directives with
-remark settings without `trimFinalNewline` attribute.
+plugin options without `trimFinalNewline` attribute.
 
 Remark settings (.remarkrc.mjs):
 

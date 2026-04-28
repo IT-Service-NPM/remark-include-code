@@ -4,12 +4,11 @@ import { remarkIncludeCode } from '@it-service-npm/remark-include-code/async';
 export default {
   plugins: [
     remarkDirective,
-    remarkIncludeCode,
+    [remarkIncludeCode, {
+      trimFinalNewline: true
+    }],
   ],
   settings: {
-    bullet: '-',
-    includeCodeSettings: {
-      trimFinalNewline: true
-    }
+    bullet: '-'
   }
 }
