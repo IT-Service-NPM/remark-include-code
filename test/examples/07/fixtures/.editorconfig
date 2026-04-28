@@ -1,0 +1,7 @@
+; Check http://editorconfig.org/ for more information
+; Top-most EditorConfig file
+root = false
+
+[*.json]
+indent_style = tab
+indent_size = 5

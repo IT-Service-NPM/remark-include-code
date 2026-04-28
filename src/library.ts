@@ -53,6 +53,11 @@ export interface IDirectiveAttributes extends Required<IParameters> {
   encoding: iconv.Encoding;
 
   /**
+   * Tab width for replacing by spaces in included code
+   */
+  tabWidth?: number;
+
+  /**
    * First line of included range
    */
   fromLine?: number;
@@ -251,6 +256,16 @@ export function getAttributes(
     attributes.toLine = Number(node.attributes.toLine);
   }
 
+  if (typeof node.attributes.tabWidth === 'string') {
+    if (!Number.isInteger(Number(node.attributes.tabWidth))) {
+      file.fail(
+        `::include-code, \`tabWidth\` attribute invalid value "${node.attributes.tabWidth}"`,
+        node
+      );
+    }
+    attributes.tabWidth = Number(node.attributes.tabWidth);
+  }
+
   const unexpectedAttributes = Object.keys(node.attributes)
     .filter((attribute) => !(Object.keys(attributes).includes(attribute)));
   if (unexpectedAttributes.length > 0) {
@@ -293,6 +308,13 @@ export function updateAttributesWithEditorconfig(
     (editorconfigProperties.charset !== undefined)
   ) {
     attributes.encoding = editorconfigProperties.charset.toString();
+  }
+
+  if (
+    (node.attributes?.tabWidth === undefined) &&
+    (editorconfigProperties.tab_width !== undefined)
+  ) {
+    attributes.tabWidth = Number(editorconfigProperties.tab_width);
   }
 
   return attributes;
@@ -350,19 +372,32 @@ export function processCodeFileContent(
 ): string {
 
   let textContent = iconv.decode(content, attributes.encoding)
+    // EOL normalize
     .replaceAll(/\r?\n/g, '\n');
 
   if (attributes.trimFinalNewline) {
     textContent = textContent.replace(/\n$/, '');
-  };
+  }
 
+  // select range of code lines
   const contentLines = textContent.split('\n');
-  const result = contentLines
+  textContent = contentLines
     .slice(
       (attributes.fromLine ?? 1) - 1,
       attributes.toLine ?? contentLines.length
     )
     .join('\n');
 
-  return result;
+  // replace tabs with spaces
+  if (attributes.tabWidth !== undefined) {
+    textContent = textContent.replaceAll(
+      new RegExp(
+        String.raw`(?<=^( {${attributes.tabWidth.toString()}}| {0,${(attributes.tabWidth - 1).toString()}}\t)*) {0,${(attributes.tabWidth - 1).toString()}}\t`,
+        'gm'
+      ),
+      ' '.repeat(attributes.tabWidth)
+    );
+  }
+
+  return textContent;
 }

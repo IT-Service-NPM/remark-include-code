@@ -1,0 +1,28 @@
+# Tabs replacing with spaces
+
+`::include-code` replace tabs in code with spaces if `tabWidth` attribute specified.
+
+Source files:
+
+main.md:
+
+::include-code{file="fixtures/main.md" language="markdown" trimFinalNewline}
+
+example.json:
+
+::include-code{file="fixtures/example.json" language="json" tabWidth=2 trimFinalNewline}
+
+Remark output:
+
+::include-code{file="snapshots/output.md" language="markdown" trimFinalNewline}
+
+Or You can use `tab_width` property value from `.editorconfig` file with
+`useEditorConfig` attribute or parameter.
+
+main.md:
+
+::include-code{file="fixtures/main-without-editorconfig.md" language=markdown trimFinalNewline}
+
+example.ts:
+
+::include-code{file="example-with-editorconfig.ts" language="typescript" trimFinalNewline}
