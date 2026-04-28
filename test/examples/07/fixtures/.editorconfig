@@ -4,4 +4,4 @@ root = false
 
 [*.json]
 indent_style = tab
-indent_size = 5
+indent_size = 4

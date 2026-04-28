@@ -463,7 +463,7 @@ main.md:
 ```markdown
 Hello. I am an main markdown file with `::include-code` directive.
 
-::include-code{file="./example.json" language="json" tabWidth=5}
+::include-code{file="./example.json" language="json" tabWidth=4}
 ```
 
 example.json:
@@ -491,17 +491,17 @@ Hello. I am an main markdown file with `::include-code` directive.
 
 ```json
 {
-     "extends": "./tsconfig.json",
-     "include": [
-          "./src"
-     ],
-     "compilerOptions": {
-          "composite": true,
-          "noEmit": false,
-          "allowImportingTsExtensions": false,
-          "outDir": "./dist",
-          "rootDir": "./src"
-     }
+    "extends": "./tsconfig.json",
+    "include": [
+        "./src"
+    ],
+    "compilerOptions": {
+        "composite": true,
+        "noEmit": false,
+        "allowImportingTsExtensions": false,
+        "outDir": "./dist",
+        "rootDir": "./src"
+    }
 }
 
 ```
