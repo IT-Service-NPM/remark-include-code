@@ -1,13 +1,14 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
-import type { Transformer, Preset, Processor, Plugin } from 'unified';
+import type { Processor, Transformer, Preset, Plugin } from 'unified';
 import type { Root, Code } from 'mdast';
 import remarkDirective from 'remark-directive';
 import type { VFile } from 'vfile';
 import { VFileMessage } from 'vfile-message';
+import { parse } from 'editorconfig';
 import {
-  type Parameters,
-  getIncludeDirectives, getAttributes,
+  type IParameters,
+  getIncludeDirectives, getAttributes, updateAttributesWithEditorconfig,
   assertFileDirnameIsDefined,
   processFileError, processCodeFileContent
 } from './library.js';
@@ -25,11 +26,11 @@ import {
  * @public
  */
 export const remarkIncludeCode: Plugin<
-  [Parameters?],
+  [IParameters?],
   Root
 > = function (
   this: Processor,
-  parameters?: Parameters
+  parameters?: IParameters
 ): Transformer<Root> {
 
     // const processor: Processor = this;
@@ -45,14 +46,28 @@ export const remarkIncludeCode: Plugin<
             file, includeDirective.node, parameters
           );
           const includedFilePath = path.resolve(fileDirname, attributes.file);
+          if (attributes.useEditorConfig) {
+            const editorconfigFileProperties = await parse(includedFilePath);
+            updateAttributesWithEditorconfig(
+              file, includeDirective.node,
+              parameters, attributes,
+              editorconfigFileProperties
+            );
+          }
           let includedFileContent = '';
           try {
             const buffer = await readFile(includedFilePath);
             includedFileContent = processCodeFileContent(
-              file, includeDirective.node, attributes, buffer
+              file, includeDirective.node,
+              attributes, parameters,
+              buffer
             );
           } catch (error) {
-            processFileError(file, includeDirective.node, attributes, error);
+            processFileError(
+              file, includeDirective.node,
+              attributes, parameters,
+              error
+            );
           };
           includedContent = [{
             type: 'code',

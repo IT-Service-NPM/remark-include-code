@@ -3,11 +3,20 @@ import type { LeafDirective } from 'mdast-util-directive';
 import type { VFile } from 'vfile';
 import { visit } from 'unist-util-visit';
 import iconv from 'iconv-lite';
+import { type Props } from 'editorconfig';
 
 /**
  * Plugin parameters
  */
-export interface Parameters {
+export interface IParameters {
+
+  /**
+   * use .editorconfig file if attribute value is not provided:
+   *
+   * - `charset` (if `encoding` attribute is not provided)
+   * - `indent_size` (if `tabSize` attribute is not provided)
+   */
+  useEditorConfig?: boolean;
 
   /**
    * Trim final newline in code
@@ -21,10 +30,12 @@ export interface Parameters {
 
 }
 
+export type Parameters = IParameters | undefined;
+
 /**
  * Directive attributes
  */
-export interface DirectiveAttributes extends Required<Parameters> {
+export interface IDirectiveAttributes extends Required<IParameters> {
 
   /**
    * Code file path
@@ -113,6 +124,7 @@ export function assertFileDirnameIsDefined(
  *
  * @param file - Current markdown file
  * @param node - `::include-code` directive Node
+ * @param parameters - plugin parameters
  * @throws `VFileMessage` if `file` attribute
  *  for `::include-code` directive does not exists or empty
  *
@@ -123,14 +135,15 @@ export function getAttributes(
   file: VFile,
   node: LeafDirective,
   parameters?: Parameters
-): DirectiveAttributes {
+): IDirectiveAttributes {
 
-  const attributes: DirectiveAttributes = {
+  const attributes: IDirectiveAttributes = {
     file: '',
     optional: false,
     language: '',
     encoding: 'utf8',
-    trimFinalNewline: false
+    trimFinalNewline: false,
+    useEditorConfig: false
   };
 
   if (!(
@@ -143,6 +156,27 @@ export function getAttributes(
     );
   }
   attributes.file = node.attributes.file;
+
+  if (typeof node.attributes.useEditorConfig === 'string') {
+    switch (node.attributes.useEditorConfig) {
+      case '':
+      case 'true': {
+        attributes.useEditorConfig = true;
+        break;
+      }
+      case 'false': {
+        break;
+      }
+      default: {
+        file.fail(
+          `::include-code, \`useEditorConfig\` attribute invalid value "${node.attributes.useEditorConfig}"`,
+          node
+        );
+      }
+    };
+  } else {
+    attributes.useEditorConfig = parameters?.useEditorConfig ?? false;
+  }
 
   if (typeof node.attributes.optional === 'string') {
     switch (node.attributes.optional) {
@@ -233,11 +267,44 @@ export function getAttributes(
 }
 
 /**
+ * Update attributes of `::include-code`
+ * with .editorconfig properties for code file
+ *
+ * @param file - Current markdown file
+ * @param node - `::include-code` directive Node
+ * @param parameters - plugin parameters
+ * @param attributes - `::include-code` attributes
+ * @param editorconfigProperties - properties from .editorconfig for code file
+ * @throws `VFileMessage` if `file` attribute
+ *  for `::include-code` directive does not exists or empty
+ *
+ * @internal
+ */
+export function updateAttributesWithEditorconfig(
+  file: VFile,
+  node: LeafDirective,
+  _parameters: Parameters,
+  attributes: IDirectiveAttributes,
+  editorconfigProperties: Props
+): IDirectiveAttributes {
+
+  if (
+    (node.attributes?.encoding === undefined) &&
+    (editorconfigProperties.charset !== undefined)
+  ) {
+    attributes.encoding = editorconfigProperties.charset.toString();
+  }
+
+  return attributes;
+}
+
+/**
  * Test and return attributes of `::include-code` directive Node
  *
  * @param file - Current markdown file
  * @param node - `::include-code` directive Node
  * @param attributes - `::include-code` attributes
+ * @param parameters - plugin parameters
  * @param error - error from `readFile` or `readFileSync`
  * @throws `VFileMessage`
  *
@@ -246,7 +313,8 @@ export function getAttributes(
 export function processFileError(
   file: VFile,
   node: LeafDirective,
-  attributes: DirectiveAttributes,
+  attributes: IDirectiveAttributes,
+  parameters: Parameters,
   error: any
 ): void {
   if (error instanceof Error && 'code' in error && error.code === 'ENOENT') {
@@ -267,6 +335,7 @@ export function processFileError(
  * @param file - Current markdown file
  * @param node - `::include-code` directive Node
  * @param attributes - `::include-code` attributes
+ * @param parameters - plugin parameters
  * @param content - file content
  * @throws `VFileMessage`
  *
@@ -275,7 +344,8 @@ export function processFileError(
 export function processCodeFileContent(
   file: VFile,
   node: LeafDirective,
-  attributes: DirectiveAttributes,
+  attributes: IDirectiveAttributes,
+  parameters: Parameters | undefined,
   content: Buffer<ArrayBuffer>
 ): string {
 

@@ -8,11 +8,11 @@ import type { Plugin } from 'unified';
 import type { Preset } from 'unified';
 import type { Root } from 'mdast';
 
-// Warning: (ae-forgotten-export) The symbol "Parameters_2" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "IParameters" needs to be exported by the entry point index.d.ts
 //
 // @public
 export const remarkIncludeCode: Plugin<[
-Parameters_2?
+IParameters?
 ], Root>;
 
 // @public
@@ -25,7 +25,7 @@ export const remarkIncludeCodePresetSync: Preset;
 
 // @public
 export const remarkIncludeCodeSync: Plugin<[
-Parameters_2?
+IParameters?
 ], Root>;
 
 ```

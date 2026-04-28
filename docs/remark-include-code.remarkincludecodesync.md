@@ -14,6 +14,6 @@ This plugin allows you to incorporate code into your markdown using the `::inclu
 
 ```typescript
 remarkIncludeCode: Plugin<[
-    Parameters?
+    IParameters?
 ], Root>
 ```

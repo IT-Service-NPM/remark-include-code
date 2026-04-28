@@ -63,6 +63,7 @@
 	},
 	"packageManager": "pnpm@10.30.3",
 	"dependencies": {
+		"editorconfig": "^3.0.2",
 		"iconv-lite": "^0.7.2",
 		"remark-directive": "^4.0.0",
 		"unist-util-visit": "^5.1.0",

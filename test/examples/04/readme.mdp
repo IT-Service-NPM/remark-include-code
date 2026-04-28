@@ -16,3 +16,14 @@ included1.bat:
 Remark output:
 
 ::include-code{file="snapshots/output.md" language="markdown"}
+
+Or You can use `charset` property value for encoding from `.editorconfig` file with
+`useEditorConfig` attribute or parameter.
+
+main.md:
+
+::include-code{file="fixtures/main-without-editorconfig.md" language=markdown}
+
+example.ts:
+
+::include-code{file="example-with-editorconfig.ts" language="typescript"}

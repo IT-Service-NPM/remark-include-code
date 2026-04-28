@@ -1,6 +1,3 @@
 Hello. I am an main markdown file with `::include-code` directive.
 
-```batchfile
-echo "Кириллический текст"
-
-```
+::include-code{file="./included1.bat" language="batchfile"}
