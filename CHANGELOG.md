@@ -13,6 +13,19 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/IT-Service-NPM/remark-include-code/compare/v1.3.0...v2.0.0) (2026-04-28)
+
+
+### Bug Fixes
+
+* add `trimFinalNewline` parameter ([90ba180](https://github.com/IT-Service-NPM/remark-include-code/commit/90ba18041ed597b6d8346414ebab06c478420af4))
+
+
+### BREAKING CHANGES
+
+* remove `trimFinalNewline` setting
+and add `trimFinalNewline` plugin parameter
+
 # [1.3.0](https://github.com/IT-Service-NPM/remark-include-code/compare/v1.2.1...v1.3.0) (2026-04-25)
 
 
