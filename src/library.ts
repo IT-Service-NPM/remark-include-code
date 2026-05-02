@@ -139,5 +139,29 @@ export function processCodeFileContent(
     );
   }
 
+  if (
+    attributes.trimExtraIndent &&
+    (attributes.tabWidth !== undefined)
+  ) {
+    // eslint-disable-next-line sonarjs/slow-regex
+    const indentsWidth = /^\s*(?=\S)/gmd
+      .exec(textContent)
+      ?.indices
+      ?.map(
+        (
+          indentPosition?: [number, number]
+        ): number => indentPosition ? indentPosition[1] - indentPosition[0] : 0
+      );
+    const extraIndentWidth = indentsWidth ?
+      // eslint-disable-next-line unicorn/no-null
+      Math.min.apply(null, indentsWidth) : 0;
+    if (extraIndentWidth) {
+      textContent = textContent.replaceAll(
+        new RegExp(String.raw`^ {${extraIndentWidth.toString()}}`, 'gm'),
+        ''
+      );
+    }
+  }
+
   return textContent;
 }

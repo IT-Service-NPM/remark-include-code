@@ -21,6 +21,11 @@ export default {
     remarkGithubAdmonitions,
     remarkDirective,
     remarkIncludeCode,
+    // [remarkIncludeCode, {
+    //   useEditorConfig: true,
+    //   trimFinalNewline: true,
+    //   trimExtraIndent: true
+    // }],
     remarkInclude,
     remarkHeadingsAdjustment,
     remarkRelativeUrlsAdjustment,

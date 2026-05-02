@@ -26,6 +26,11 @@ export interface IParameters {
    */
   optional?: boolean;
 
+  /**
+   * Remove the general extra indentation for a block of code
+   */
+  trimExtraIndent?: boolean;
+
 }
 
 export type Parameters = Readonly<IParameters> | undefined;
@@ -71,7 +76,8 @@ function keyofParameters(): string[] {
   const _parameters: Required<IParameters> = {
     useEditorConfig: false,
     trimFinalNewline: false,
-    optional: false
+    optional: false,
+    trimExtraIndent: false
   };
   return Object.keys(_parameters);
 }
@@ -103,6 +109,7 @@ export function getAttributes(
     language: parseOptionalStringAttribute('language') ?? '',
     encoding: parseOptionalEncodingAttribute('encoding') ?? 'utf8',
     trimFinalNewline: parseOptionalBooleanAttribute('trimFinalNewline') ?? false,
+    trimExtraIndent: parseOptionalBooleanAttribute('trimExtraIndent') ?? false,
     useEditorConfig: parseOptionalBooleanAttribute('useEditorConfig') ?? false,
     fromLine: parseOptionalIntegerAttribute('fromLine'),
     toLine: parseOptionalIntegerAttribute('toLine'),
