@@ -7,11 +7,14 @@ import type { VFile } from 'vfile';
 import { VFileMessage } from 'vfile-message';
 import { parseSync } from 'editorconfig';
 import {
-  type IParameters,
-  getIncludeDirectives, getAttributes, updateAttributesWithEditorconfig,
+  getIncludeDirectives,
   assertFileDirnameIsDefined,
   processFileError, processCodeFileContent
 } from './library.js';
+import {
+  type IParameters,
+  getAttributes, updateAttributesWithEditorconfig
+} from './options.js';
 
 /**
  * Sync Remark plugin fabric function.
