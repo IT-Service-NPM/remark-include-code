@@ -13,6 +13,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/IT-Service-NPM/remark-include-code/compare/v2.2.0...v2.3.0) (2026-05-02)
+
+
+### Features
+
+* add `trimExtraIndent` option ([2045f13](https://github.com/IT-Service-NPM/remark-include-code/commit/2045f13be9c69acac36ab931f0fb23bdab2a0ebf))
+
 # [2.2.0](https://github.com/IT-Service-NPM/remark-include-code/compare/v2.1.0...v2.2.0) (2026-04-28)
 
 
