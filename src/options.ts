@@ -1,7 +1,9 @@
 import type { LeafDirective } from 'mdast-util-directive';
 import type { VFile } from 'vfile';
 import iconv, { type Encoding } from 'iconv-lite';
-import { type Props } from 'editorconfig';
+import type {
+  Props as EditorConfigProperties
+} from 'editorconfig';
 
 /**
  * Plugin parameters
@@ -251,7 +253,7 @@ export function updateAttributesWithEditorconfig(
   node: LeafDirective,
   _parameters: Parameters,
   attributes: IDirectiveAttributes,
-  editorconfigProperties: Props
+  editorconfigProperties: EditorConfigProperties
 ): IDirectiveAttributes {
 
   if (

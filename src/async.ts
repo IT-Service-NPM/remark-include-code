@@ -5,7 +5,9 @@ import type { Root, Code } from 'mdast';
 import remarkDirective from 'remark-directive';
 import type { VFile } from 'vfile';
 import { VFileMessage } from 'vfile-message';
-import { parse } from 'editorconfig';
+import {
+  parse as parseEditorConfig
+} from 'editorconfig';
 import {
   getIncludeDirectives,
   assertFileDirnameIsDefined,
@@ -50,7 +52,8 @@ export const remarkIncludeCode: Plugin<
           );
           const includedFilePath = path.resolve(fileDirname, attributes.file);
           if (attributes.useEditorConfig) {
-            const editorconfigFileProperties = await parse(includedFilePath);
+            const editorconfigFileProperties =
+              await parseEditorConfig(includedFilePath);
             updateAttributesWithEditorconfig(
               file, includeDirective.node,
               parameters, attributes,
