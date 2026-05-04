@@ -72,7 +72,7 @@ export function assertFileDirnameIsDefined(
  *
  * @internal
  */
-export function processFileError(
+export function catchFileError(
   file: VFile,
   node: LeafDirective,
   attributes: IDirectiveAttributes,

@@ -11,7 +11,7 @@ import {
 import {
   getIncludeDirectives,
   assertFileDirnameIsDefined,
-  processFileError, processCodeFileContent
+  catchFileError, processCodeFileContent
 } from './library.js';
 import {
   type IParameters,
@@ -70,7 +70,7 @@ export const remarkIncludeCode: Plugin<
               buffer
             );
           } catch (error) {
-            processFileError(
+            catchFileError(
               file, includeDirective.node,
               attributes, parameters,
               error
