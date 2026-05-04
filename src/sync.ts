@@ -11,12 +11,13 @@ import {
 import {
   getIncludeDirectives,
   assertFileDirnameIsDefined,
-  catchFileError, processCodeFileContent
+  catchFileError
 } from './library.js';
 import {
   type IParameters,
   getAttributes, updateAttributesWithEditorconfig
 } from './options.js';
+import { CodeFileContent } from './code-content.js';
 
 /**
  * Sync Remark plugin fabric function.
@@ -63,12 +64,17 @@ export const remarkIncludeCode: Plugin<
           }
           let includedFileContent = '';
           try {
-            const buffer = readFileSync(includedFilePath);
-            includedFileContent = processCodeFileContent(
-              file, includeDirective.node,
-              attributes, parameters,
-              buffer
-            );
+            includedFileContent = new CodeFileContent(
+              file, includeDirective.node, attributes,
+              readFileSync(includedFilePath)
+            )
+              .decode()
+              .normalizeEOL()
+              .trimFinalNewline()
+              .selectLinesRange()
+              .replaceTabs()
+              .normalizeIndent()
+              .content;
           } catch (error) {
             catchFileError(
               file, includeDirective.node,
