@@ -1,7 +1,7 @@
 import type { LeafDirective } from 'mdast-util-directive';
 import type { VFile } from 'vfile';
 import iconv from 'iconv-lite';
-import type { IDirectiveAttributes, Parameters } from './options.js';
+import type { IDirectiveAttributes } from './options.js';
 
 /**
  * Class for code file content
@@ -112,79 +112,4 @@ export class CodeFileContent {
     return this;
   }
 
-}
-
-/**
- * Code file content processing
- *
- * @param file - Current markdown file
- * @param node - `::include-code` directive Node
- * @param attributes - `::include-code` attributes
- * @param parameters - plugin parameters
- * @param content - file content
- * @throws `VFileMessage`
- *
- * @internal
- */
-export function processCodeFileContent(
-  file: VFile,
-  node: LeafDirective,
-  attributes: IDirectiveAttributes,
-  parameters: Parameters | undefined,
-  content: Buffer<ArrayBuffer>
-): string {
-
-  let textContent = iconv.decode(content, attributes.encoding)
-    // EOL normalize
-    .replaceAll(/\r?\n/g, '\n');
-
-  if (attributes.trimFinalNewline) {
-    textContent = textContent.replace(/\n$/, '');
-  }
-
-  // select range of code lines
-  const contentLines = textContent.split('\n');
-  textContent = contentLines
-    .slice(
-      (attributes.fromLine ?? 1) - 1,
-      attributes.toLine ?? contentLines.length
-    )
-    .join('\n');
-
-  // replace tabs with spaces
-  if (attributes.tabWidth !== undefined) {
-    textContent = textContent.replaceAll(
-      new RegExp(
-        String.raw`(?<=^( {${attributes.tabWidth.toString()}}| {0,${(attributes.tabWidth - 1).toString()}}\t)*) {0,${(attributes.tabWidth - 1).toString()}}\t`,
-        'gm'
-      ),
-      ' '.repeat(attributes.tabWidth)
-    );
-  }
-
-  if (
-    attributes.trimExtraIndent &&
-    (attributes.tabWidth !== undefined)
-  ) {
-    // eslint-disable-next-line sonarjs/slow-regex
-    const indentsWidth = /^\s*(?=\S)/gmd
-      .exec(textContent)
-      ?.indices
-      ?.map(
-        (
-          indentPosition?: [number, number]
-        ): number => indentPosition ? indentPosition[1] - indentPosition[0] : 0
-      );
-    const extraIndentWidth = indentsWidth ?
-      // eslint-disable-next-line unicorn/no-null
-      Math.min.apply(null, indentsWidth) : 0;
-    if (extraIndentWidth) {
-      textContent = textContent.replaceAll(
-        new RegExp(String.raw`^ {${extraIndentWidth.toString()}}`, 'gm'),
-        ''
-      );
-    }
-  }
-
-  return textContent;
 }
