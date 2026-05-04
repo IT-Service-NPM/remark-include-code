@@ -12,7 +12,7 @@ import {
 } from './library.js';
 import {
   type IParameters,
-  getAttributes, updateAttributesWithEditorconfig
+  getOptions, updateOptionsWithEditorconfig
 } from './options.js';
 import { CodeFileContent } from './code-content.js';
 
@@ -45,20 +45,20 @@ export const remarkIncludeCode: Plugin<
       for (const includeDirective of includeDirectives) {
         const includedContent: Code[] = [];
         try {
-          const attributes = getAttributes(
+          const options = getOptions(
             file, includeDirective.node,
             parameters
           );
-          const includedFilePath = path.resolve(fileDirname, attributes.file);
-          if (attributes.useEditorConfig) {
-            updateAttributesWithEditorconfig(
+          const includedFilePath = path.resolve(fileDirname, options.file);
+          if (options.useEditorConfig) {
+            updateOptionsWithEditorconfig(
               file, includeDirective.node,
-              parameters, attributes,
+              parameters, options,
               parseEditorConfigSync(includedFilePath)
             );
           }
           const includedFileContent = CodeFileContent.readFileSync(
-            file, includeDirective.node, attributes,
+            file, includeDirective.node, options,
             includedFilePath
           )
             .decode()
@@ -69,7 +69,7 @@ export const remarkIncludeCode: Plugin<
             .normalizeIndent();
           includedContent.push({
             type: 'code',
-            lang: attributes.language,
+            lang: options.language,
             value: includedFileContent.content
           });
         } catch (error) {

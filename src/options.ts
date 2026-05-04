@@ -40,7 +40,7 @@ export type Parameters = Readonly<IParameters> | undefined;
 /**
  * Directive attributes
  */
-export interface IDirectiveAttributes extends Required<IParameters> {
+export interface IAttributes extends Required<IParameters> {
 
   /**
    * Code file path
@@ -74,6 +74,11 @@ export interface IDirectiveAttributes extends Required<IParameters> {
 
 }
 
+/**
+ * Directive options
+ */
+export interface IOptions extends Required<IParameters>, IAttributes { }
+
 function keyofParameters(): string[] {
   const _parameters: Required<IParameters> = {
     useEditorConfig: false,
@@ -99,13 +104,13 @@ function isParameter(id: string): id is keyof IParameters {
  *
  * @internal
  */
-export function getAttributes(
+export function getOptions(
   file: VFile,
   node: LeafDirective,
   parameters?: Parameters
-): IDirectiveAttributes {
+): IAttributes {
 
-  const attributes: IDirectiveAttributes = {
+  const options: IOptions = {
     file: parseFileAttribute('file'),
     optional: parseOptionalBooleanAttribute('optional') ?? false,
     language: parseOptionalStringAttribute('language') ?? '',
@@ -117,19 +122,17 @@ export function getAttributes(
     toLine: parseOptionalIntegerAttribute('toLine'),
     tabWidth: parseOptionalIntegerAttribute('tabWidth')
   };
-
   assertNoUnknownAttributes(node.attributes);
-
-  return attributes;
+  return options;
 
   function assertNoUnknownAttributes(
     _attributes?: Record<string, string | null | undefined> | null
   ): asserts _attributes is Record<
-    keyof IDirectiveAttributes,
+    keyof IAttributes,
     string | null | undefined
   > | null {
     if ((_attributes !== undefined) && (_attributes !== null)) {
-      const knownAttributes = Object.keys(attributes);
+      const knownAttributes = Object.keys(options);
       const unexpectedAttributes = Object.keys(_attributes)
         .filter((attribute) => !(knownAttributes.includes(attribute)));
       if (unexpectedAttributes.length > 0) {
@@ -145,7 +148,7 @@ export function getAttributes(
   }
 
   function parseFileAttribute(
-    optionName: keyof IDirectiveAttributes
+    optionName: keyof IAttributes
   ): string {
     if (!(
       (typeof node.attributes?.[optionName] === 'string') &&
@@ -160,7 +163,7 @@ export function getAttributes(
   }
 
   function parseOptionalBooleanAttribute(
-    optionName: keyof IDirectiveAttributes
+    optionName: keyof IAttributes
   ): boolean | undefined {
     if (typeof node.attributes?.[optionName] === 'string') {
       switch (node.attributes[optionName]) {
@@ -188,7 +191,7 @@ export function getAttributes(
   }
 
   function parseOptionalStringAttribute(
-    optionName: keyof IDirectiveAttributes
+    optionName: keyof IAttributes
   ): string | undefined {
     if (typeof node.attributes?.[optionName] === 'string') {
       return node.attributes[optionName];
@@ -200,7 +203,7 @@ export function getAttributes(
   }
 
   function parseOptionalEncodingAttribute(
-    optionName: keyof IDirectiveAttributes
+    optionName: keyof IAttributes
   ): Encoding | undefined {
     const encoding = parseOptionalStringAttribute(optionName);
     if (encoding === undefined) {
@@ -216,7 +219,7 @@ export function getAttributes(
   }
 
   function parseOptionalIntegerAttribute(
-    optionName: keyof IDirectiveAttributes
+    optionName: keyof IAttributes
   ): number | undefined {
     if (typeof node.attributes?.[optionName] === 'string') {
       if (!Number.isInteger(Number(node.attributes[optionName]))) {
@@ -248,13 +251,13 @@ export function getAttributes(
  *
  * @internal
  */
-export function updateAttributesWithEditorconfig(
+export function updateOptionsWithEditorconfig(
   file: VFile,
   node: LeafDirective,
   _parameters: Parameters,
-  attributes: IDirectiveAttributes,
+  attributes: IAttributes,
   editorconfigProperties: EditorConfigProperties
-): IDirectiveAttributes {
+): IAttributes {
 
   if (
     (node.attributes?.encoding === undefined) &&

@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises';
 import type { LeafDirective } from 'mdast-util-directive';
 import type { VFile } from 'vfile';
 import iconv from 'iconv-lite';
-import type { IDirectiveAttributes } from './options.js';
+import type { IAttributes } from './options.js';
 
 /**
  * Class for code file content
@@ -19,14 +19,14 @@ export class CodeFileContent {
 
   protected readonly file: VFile;
   protected readonly node: LeafDirective;
-  protected readonly attributes: IDirectiveAttributes;
+  protected readonly attributes: IAttributes;
   protected fileContent?: Buffer<ArrayBuffer>;
   protected _content: string;
 
   public constructor(
     file: VFile,
     node: LeafDirective,
-    attributes: IDirectiveAttributes,
+    attributes: IAttributes,
     content?: Buffer<ArrayBuffer>
   ) {
     this.file = file;
@@ -39,7 +39,7 @@ export class CodeFileContent {
   public static readFileSync(
     file: VFile,
     node: LeafDirective,
-    attributes: IDirectiveAttributes,
+    attributes: IAttributes,
     path: string
   ): CodeFileContent {
     const self = new CodeFileContent(file, node, attributes);
@@ -54,7 +54,7 @@ export class CodeFileContent {
   public static async readFile(
     file: VFile,
     node: LeafDirective,
-    attributes: IDirectiveAttributes,
+    attributes: IAttributes,
     path: string
   ): Promise<CodeFileContent> {
     const self = new CodeFileContent(file, node, attributes);
