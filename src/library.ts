@@ -2,7 +2,6 @@ import type { Root, Parent } from 'mdast';
 import type { LeafDirective } from 'mdast-util-directive';
 import type { VFile } from 'vfile';
 import { visit } from 'unist-util-visit';
-import type { IDirectiveAttributes, Parameters } from './options.js';
 
 export interface DirectiveInfo {
   node: LeafDirective,
@@ -56,36 +55,5 @@ export function assertFileDirnameIsDefined(
     file.fail(
       '::include-code, unexpected error: "file" should be an instance of VFile with specified path'
     );
-  }
-}
-
-/**
- * Test and return attributes of `::include-code` directive Node
- *
- * @param file - Current markdown file
- * @param node - `::include-code` directive Node
- * @param attributes - `::include-code` attributes
- * @param parameters - plugin parameters
- * @param error - error from `readFile` or `readFileSync`
- * @throws `VFileMessage`
- *
- * @internal
- */
-export function catchFileError(
-  file: VFile,
-  node: LeafDirective,
-  attributes: IDirectiveAttributes,
-  parameters: Parameters,
-  error: any
-): void {
-  if (error instanceof Error && 'code' in error && error.code === 'ENOENT') {
-    const errorMessage = `::include-code, file(s) "${attributes.file}" not found`;
-    if (attributes.optional) {
-      throw file.info(errorMessage, node);
-    } else {
-      file.fail(errorMessage, node);
-    }
-  } else {
-    throw error;
   }
 }

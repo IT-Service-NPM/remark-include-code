@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs';
+import { readFile } from 'node:fs/promises';
 import type { LeafDirective } from 'mdast-util-directive';
 import type { VFile } from 'vfile';
 import iconv from 'iconv-lite';
@@ -18,7 +20,7 @@ export class CodeFileContent {
   protected readonly file: VFile;
   protected readonly node: LeafDirective;
   protected readonly attributes: IDirectiveAttributes;
-  protected readonly fileContent: Buffer<ArrayBuffer>;
+  protected fileContent: Buffer<ArrayBuffer>;
   protected _content: string;
 
   public constructor(
@@ -32,6 +34,42 @@ export class CodeFileContent {
     this.attributes = attributes;
     this.fileContent = content;
     this._content = '';
+  }
+
+  public static readFileSync(
+    file: VFile,
+    node: LeafDirective,
+    attributes: IDirectiveAttributes,
+    path: string
+  ): CodeFileContent {
+    const self = new CodeFileContent(
+      file, node, attributes,
+      Buffer.alloc(0)
+    );
+    try {
+      self.fileContent = readFileSync(path);
+    } catch (error) {
+      self.catchFileError(error);
+    };
+    return self;
+  }
+
+  public static async readFile(
+    file: VFile,
+    node: LeafDirective,
+    attributes: IDirectiveAttributes,
+    path: string
+  ): Promise<CodeFileContent> {
+    const self = new CodeFileContent(
+      file, node, attributes,
+      Buffer.alloc(0)
+    );
+    try {
+      self.fileContent = await readFile(path);
+    } catch (error) {
+      self.catchFileError(error);
+    };
+    return self;
   }
 
   public get content(): string {
@@ -110,6 +148,19 @@ export class CodeFileContent {
       }
     }
     return this;
+  }
+
+  protected catchFileError(error: any): void {
+    if (error instanceof Error && 'code' in error && error.code === 'ENOENT') {
+      const errorMessage = `::include-code, file(s) "${this.attributes.file}" not found`;
+      if (this.attributes.optional) {
+        throw this.file.info(errorMessage, this.node);
+      } else {
+        this.file.fail(errorMessage, this.node);
+      }
+    } else {
+      throw error;
+    }
   }
 
 }

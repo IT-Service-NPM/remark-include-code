@@ -1,4 +1,3 @@
-import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import type { Processor, Transformer, Preset, Plugin } from 'unified';
 import type { Root, Code } from 'mdast';
@@ -9,9 +8,7 @@ import {
   parseSync as parseEditorConfigSync
 } from 'editorconfig';
 import {
-  getIncludeDirectives,
-  assertFileDirnameIsDefined,
-  catchFileError
+  getIncludeDirectives, assertFileDirnameIsDefined,
 } from './library.js';
 import {
   type IParameters,
@@ -62,30 +59,20 @@ export const remarkIncludeCode: Plugin<
               editorconfigFileProperties
             );
           }
-          let includedFileContent = '';
-          try {
-            includedFileContent = new CodeFileContent(
-              file, includeDirective.node, attributes,
-              readFileSync(includedFilePath)
-            )
-              .decode()
-              .normalizeEOL()
-              .trimFinalNewline()
-              .selectLinesRange()
-              .replaceTabs()
-              .normalizeIndent()
-              .content;
-          } catch (error) {
-            catchFileError(
-              file, includeDirective.node,
-              attributes, parameters,
-              error
-            );
-          };
+          const includedFileContent = CodeFileContent.readFileSync(
+            file, includeDirective.node, attributes,
+            includedFilePath
+          )
+            .decode()
+            .normalizeEOL()
+            .trimFinalNewline()
+            .selectLinesRange()
+            .replaceTabs()
+            .normalizeIndent();
           includedContent = [{
             type: 'code',
             lang: attributes.language,
-            value: includedFileContent
+            value: includedFileContent.content
           }];
         } catch (error) {
           if (!((error instanceof VFileMessage) && (!error.fatal))) {
