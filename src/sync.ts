@@ -9,9 +9,9 @@ import {
 import {
   getIncludeDirectives, assertFileDirnameIsDefined,
   catchVFileMessages
-} from './library.js';
-import { type IParameters, Options } from './options.js';
-import { CodeFileContent } from './code-content.js';
+} from './lib/library.js';
+import { type IParameters, Options } from './lib/options.js';
+import { CodeFileContent } from './lib/code-content.js';
 
 /**
  * Sync Remark plugin fabric function.

@@ -102,6 +102,9 @@ export default defineConfig([
       '@typescript-eslint/no-unused-vars': ['error', {
         'argsIgnorePattern': '^_|^(resolve|reject|err)$'
       }],
+      '@typescript-eslint/no-wrapper-object-types': 'off',
+      '@typescript-eslint/no-empty-object-type': 'off',
+      '@typescript-eslint/consistent-indexed-object-style': 'off',
       'n/no-missing-import': ['error', {
         'ignoreTypeImport': true
       }]
