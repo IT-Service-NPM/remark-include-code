@@ -13,6 +13,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.2](https://github.com/IT-Service-NPM/remark-include-code/compare/v2.3.1...v2.3.2) (2026-05-04)
+
+
+### Bug Fixes
+
+* remove unused `processCodeFileContent` ([d7ae769](https://github.com/IT-Service-NPM/remark-include-code/commit/d7ae769594e1e4facdda7f4e338b3ec02323c329))
+
 ## [2.3.1](https://github.com/IT-Service-NPM/remark-include-code/compare/v2.3.0...v2.3.1) (2026-05-04)
 
 
