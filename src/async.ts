@@ -43,19 +43,17 @@ export const remarkIncludeCode: Plugin<
       assertFileDirnameIsDefined(file);
       const fileDirname = path.resolve(file.dirname);
       for (const includeDirective of includeDirectives) {
-        let includedContent: Code[] = [];
+        const includedContent: Code[] = [];
         try {
           const attributes = getAttributes(
             file, includeDirective.node, parameters
           );
           const includedFilePath = path.resolve(fileDirname, attributes.file);
           if (attributes.useEditorConfig) {
-            const editorconfigFileProperties =
-              await parseEditorConfig(includedFilePath);
             updateAttributesWithEditorconfig(
               file, includeDirective.node,
               parameters, attributes,
-              editorconfigFileProperties
+              await parseEditorConfig(includedFilePath)
             );
           }
           const includedFileContent = await CodeFileContent.readFile(
@@ -69,11 +67,11 @@ export const remarkIncludeCode: Plugin<
             .selectLinesRange()
             .replaceTabs()
             .normalizeIndent();
-          includedContent = [{
+          includedContent.push({
             type: 'code',
             lang: attributes.language,
             value: includedFileContent.content
-          }];
+          });
         } catch (error) {
           if (!((error instanceof VFileMessage) && (!error.fatal))) {
             throw error;
