@@ -10,10 +10,7 @@ import {
   getIncludeDirectives, assertFileDirnameIsDefined,
   catchVFileMessages
 } from './library.js';
-import {
-  type IParameters,
-  getOptions, updateOptionsWithEditorconfig
-} from './options.js';
+import { type IParameters, Options } from './options.js';
 import { CodeFileContent } from './code-content.js';
 
 /**
@@ -45,17 +42,14 @@ export const remarkIncludeCode: Plugin<
       for (const includeDirective of includeDirectives) {
         const includedContent: Code[] = [];
         try {
-          const options = getOptions(
+          const options = new Options(
             file, includeDirective.node,
+            '`::include-code`',
             parameters
           );
           const includedFilePath = path.resolve(fileDirname, options.file);
           if (options.useEditorConfig) {
-            updateOptionsWithEditorconfig(
-              file, includeDirective.node,
-              parameters, options,
-              parseEditorConfigSync(includedFilePath)
-            );
+            options.editorConfig = parseEditorConfigSync(includedFilePath);
           }
           const includedFileContent = CodeFileContent.readFileSync(
             file, includeDirective.node, options,

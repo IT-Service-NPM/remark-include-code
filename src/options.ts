@@ -6,8 +6,8 @@ import type {
 } from 'editorconfig';
 
 /**
- * Plugin parameters
- */
+* Plugin parameters
+*/
 export interface IParameters {
 
   /**
@@ -16,22 +16,22 @@ export interface IParameters {
    * - `charset` (if `encoding` attribute is not provided)
    * - `indent_size` (if `tabSize` attribute is not provided)
    */
-  useEditorConfig?: boolean;
+  readonly useEditorConfig?: boolean;
 
   /**
    * Trim final newline in code
    */
-  trimFinalNewline?: boolean;
+  readonly trimFinalNewline?: boolean;
 
   /**
    * Fail if file not found (false) or not (true)
    */
-  optional?: boolean;
+  readonly optional?: boolean;
 
   /**
    * Remove the general extra indentation for a block of code
    */
-  trimExtraIndent?: boolean;
+  readonly trimExtraIndent?: boolean;
 
 }
 
@@ -45,17 +45,17 @@ export interface IAttributes extends Required<IParameters> {
   /**
    * Code file path
    */
-  file: string;
+  readonly file: string;
 
   /**
    * Code language
    */
-  language: string;
+  readonly language: string;
 
   /**
    * Code file encoding
    */
-  encoding: iconv.Encoding;
+  encoding: Encoding;
 
   /**
    * Tab width for replacing by spaces in included code
@@ -65,12 +65,12 @@ export interface IAttributes extends Required<IParameters> {
   /**
    * First line of included range
    */
-  fromLine?: number;
+  readonly fromLine?: number;
 
   /**
    * Last line of included range
    */
-  toLine?: number;
+  readonly toLine?: number;
 
 }
 
@@ -79,94 +79,79 @@ export interface IAttributes extends Required<IParameters> {
  */
 export interface IOptions extends Required<IParameters>, IAttributes { }
 
-function keyofParameters(): string[] {
-  const _parameters: Required<IParameters> = {
-    useEditorConfig: false,
-    trimFinalNewline: false,
-    optional: false,
-    trimExtraIndent: false
-  };
-  return Object.keys(_parameters);
+type OptionsWithType<T> = {
+  [K in keyof IOptions]-?: IOptions[K] extends T ? T : never
 }
+type OptionIDWithType<T> = keyof OptionsWithType<T>
 
-function isParameter(id: string): id is keyof IParameters {
-  return keyofParameters().includes(id);
-}
+type RequiredIf<T, Expected extends boolean> =
+  Expected extends true ? T : T | undefined
 
-/**
- * Test and return attributes of `::include-code` directive Node
- *
- * @param file - Current markdown file
- * @param node - `::include-code` directive Node
- * @param parameters - plugin parameters
- * @throws `VFileMessage` if `file` attribute
- *  for `::include-code` directive does not exists or empty
- *
- * @internal
- */
-export function getOptions(
-  file: VFile,
-  node: LeafDirective,
-  parameters?: Parameters
-): IAttributes {
+abstract class OptionsBase<IParameters extends object> {
 
-  const options: IOptions = {
-    file: parseFileAttribute('file'),
-    optional: parseOptionalBooleanAttribute('optional') ?? false,
-    language: parseOptionalStringAttribute('language') ?? '',
-    encoding: parseOptionalEncodingAttribute('encoding') ?? 'utf8',
-    trimFinalNewline: parseOptionalBooleanAttribute('trimFinalNewline') ?? false,
-    trimExtraIndent: parseOptionalBooleanAttribute('trimExtraIndent') ?? false,
-    useEditorConfig: parseOptionalBooleanAttribute('useEditorConfig') ?? false,
-    fromLine: parseOptionalIntegerAttribute('fromLine'),
-    toLine: parseOptionalIntegerAttribute('toLine'),
-    tabWidth: parseOptionalIntegerAttribute('tabWidth')
-  };
-  assertNoUnknownAttributes(node.attributes);
-  return options;
+  protected readonly _file: VFile;
+  protected readonly _node: LeafDirective;
+  protected readonly _parameters?: IParameters;
+  protected readonly _messagesScope: string;
 
-  function assertNoUnknownAttributes(
-    _attributes?: Record<string, string | null | undefined> | null
-  ): asserts _attributes is Record<
-    keyof IAttributes,
-    string | null | undefined
-  > | null {
-    if ((_attributes !== undefined) && (_attributes !== null)) {
-      const knownAttributes = Object.keys(options);
-      const unexpectedAttributes = Object.keys(_attributes)
-        .filter((attribute) => !(knownAttributes.includes(attribute)));
-      if (unexpectedAttributes.length > 0) {
-        const attributesList = unexpectedAttributes
-          .map((s) => `\`${s}\``)
-          .join(', ');
-        file.fail(
-          `::include-code, unknown attribute(s): ${attributesList}`,
-          node
-        );
+  public constructor(
+    file: VFile,
+    node: LeafDirective,
+    messagesScope: string,
+    parameters?: IParameters,
+  ) {
+    this._file = file;
+    this._node = node;
+    this._parameters = parameters;
+    this._messagesScope = messagesScope;
+  }
+
+  protected fail(message: string): never {
+    this._file.fail(
+      `${this._messagesScope}, ${message}`,
+      this._node
+    );
+  }
+
+  protected keyofAttributes(): string[] {
+    return Object.keys(this);
+  }
+
+  protected abstract keyofParameters(): string[]
+
+  public isParameter(id: string): id is Extract<keyof IParameters, string> {
+    return this.keyofParameters().includes(id);
+  }
+
+  protected parseString<Expected extends boolean>(
+    optionName: OptionIDWithType<string>,
+    expected: Expected = false as Expected
+  ): RequiredIf<string, Expected> {
+    type Result = RequiredIf<string, Expected>;
+    if (
+      (typeof this._node.attributes?.[optionName] === 'string') &&
+      (this._node.attributes[optionName].length > 0)
+    ) {
+      return this._node.attributes[optionName];
+    } else if (this.isParameter(optionName)) {
+      const parameter = this._parameters?.[optionName];
+      if (parameter !== undefined) {
+        return parameter as Result;
       }
     }
-  }
-
-  function parseFileAttribute(
-    optionName: keyof IAttributes
-  ): string {
-    if (!(
-      (typeof node.attributes?.[optionName] === 'string') &&
-      (node.attributes[optionName].length > 0)
-    )) {
-      file.fail(
-        `::include-code, \`${optionName}\` attribute expected`,
-        node
-      );
+    if (expected) {
+      this.fail(`\`${optionName}\` attribute expected`);
     }
-    return node.attributes[optionName];
+    return undefined as Result;
   }
 
-  function parseOptionalBooleanAttribute(
-    optionName: keyof IAttributes
-  ): boolean | undefined {
-    if (typeof node.attributes?.[optionName] === 'string') {
-      switch (node.attributes[optionName]) {
+  protected parseBoolean<Expected extends boolean>(
+    optionName: OptionIDWithType<boolean>,
+    expected: Expected = false as Expected
+  ): RequiredIf<boolean, Expected> {
+    type Result = RequiredIf<boolean, Expected>;
+    if (typeof this._node.attributes?.[optionName] === 'string') {
+      switch (this._node.attributes[optionName]) {
         case '':
         case 'true': {
           return true;
@@ -177,101 +162,172 @@ export function getOptions(
           break;
         }
         default: {
-          file.fail(
-            `::include-code, \`${optionName}\` attribute invalid value "${node.attributes[optionName]}"`,
-            node
-          );
+          this.fail(`\`${optionName}\` attribute invalid value "${this._node.attributes[optionName]}"`);
         }
       };
-    } else {
-      if (isParameter(optionName)) {
-        return parameters?.[optionName];
+    } else if (this.isParameter(optionName)) {
+      const parameter = this._parameters?.[optionName];
+      if (parameter !== undefined) {
+        return parameter as Result;
+      }
+    }
+    if (expected) {
+      this.fail(`\`${optionName}\` attribute expected`);
+    }
+    return undefined as Result;
+  }
+
+  protected parseEncoding<Expected extends boolean>(
+    optionName: OptionIDWithType<Encoding>,
+    expected: Expected = false as Expected
+  ): RequiredIf<Encoding, Expected> {
+    type Result = RequiredIf<Encoding, Expected>;
+    const encoding = this.parseString(optionName);
+    if (encoding !== undefined) {
+      if (!iconv.encodingExists(encoding)) {
+        this.fail(`unknown encoding "${encoding as string}"`);
+      }
+      return encoding;
+    } else if (this.isParameter(optionName)) {
+      const parameter = this._parameters?.[optionName];
+      if (parameter !== undefined) {
+        return parameter as Result;
+      }
+    }
+    if (expected) {
+      this.fail(`\`${optionName}\` attribute expected`);
+    }
+    return undefined as Result;
+  }
+
+  protected parseInteger<Expected extends boolean>(
+    optionName: OptionIDWithType<number>,
+    expected: Expected = false as Expected
+  ): RequiredIf<number, Expected> {
+    type Result = RequiredIf<number, Expected>;
+    if (typeof this._node.attributes?.[optionName] === 'string') {
+      if (!Number.isInteger(Number(this._node.attributes[optionName]))) {
+        this.fail(`\`${optionName}\` attribute invalid value "${this._node.attributes[optionName]}"`);
+      }
+      return Number(this._node.attributes[optionName]);
+    } else if (this.isParameter(optionName)) {
+      const parameter = this._parameters?.[optionName];
+      if (parameter !== undefined) {
+        return parameter as Result;
+      }
+    }
+    if (expected) {
+      this.fail(`\`${optionName}\` attribute expected`);
+    }
+    return undefined as Result;
+  }
+
+  protected assertNoUnknownAttributes(): void {
+    if (
+      (this._node.attributes !== undefined) &&
+      (this._node.attributes !== null)
+    ) {
+      const knownAttributes = this.keyofAttributes();
+      const unexpectedAttributes = Object.keys(this._node.attributes)
+        .filter((attribute) => !(knownAttributes.includes(attribute)));
+      if (unexpectedAttributes.length > 0) {
+        const attributesList = unexpectedAttributes
+          .map((s) => `\`${s}\``)
+          .join(', ');
+        this.fail(`unknown attribute(s): ${attributesList}`);
       }
     }
   }
 
-  function parseOptionalStringAttribute(
-    optionName: keyof IAttributes
-  ): string | undefined {
-    if (typeof node.attributes?.[optionName] === 'string') {
-      return node.attributes[optionName];
-    } else {
-      return isParameter(optionName) ?
-        parameters?.[optionName] as string | undefined :
-        undefined;
-    }
-  }
-
-  function parseOptionalEncodingAttribute(
-    optionName: keyof IAttributes
-  ): Encoding | undefined {
-    const encoding = parseOptionalStringAttribute(optionName);
-    if (encoding === undefined) {
-      return encoding;
-    }
-    if (iconv.encodingExists(encoding)) {
-      return encoding;
-    }
-    file.fail(
-      `::include-code, unknown encoding "${encoding as string}"`,
-      node
-    );
-  }
-
-  function parseOptionalIntegerAttribute(
-    optionName: keyof IAttributes
-  ): number | undefined {
-    if (typeof node.attributes?.[optionName] === 'string') {
-      if (!Number.isInteger(Number(node.attributes[optionName]))) {
-        file.fail(
-          `::include-code, \`${optionName}\` attribute invalid value "${node.attributes[optionName]}"`,
-          node
-        );
-      }
-      return Number(node.attributes[optionName]);
-    } else {
-      return isParameter(optionName) ?
-        parameters?.[optionName] as number | undefined :
-        undefined;
-    }
-  }
 }
 
 /**
- * Update attributes of `::include-code`
- * with .editorconfig properties for code file
- *
- * @param file - Current markdown file
- * @param node - `::include-code` directive Node
- * @param parameters - plugin parameters
- * @param attributes - `::include-code` attributes
- * @param editorconfigProperties - properties from .editorconfig for code file
- * @throws `VFileMessage` if `file` attribute
- *  for `::include-code` directive does not exists or empty
+ * Directive options (attributes and parameters)
  *
  * @internal
  */
-export function updateOptionsWithEditorconfig(
-  file: VFile,
-  node: LeafDirective,
-  _parameters: Parameters,
-  attributes: IAttributes,
-  editorconfigProperties: EditorConfigProperties
-): IAttributes {
+export class Options extends OptionsBase<IParameters> implements IOptions {
 
-  if (
-    (node.attributes?.encoding === undefined) &&
-    (editorconfigProperties.charset !== undefined)
+  public readonly file: string;
+  public useEditorConfig: boolean;
+  public readonly optional: boolean;
+  public readonly language: string;
+  public encoding: Encoding;
+  public readonly trimFinalNewline: boolean;
+  public trimExtraIndent: boolean;
+  public readonly fromLine?: number;
+  public readonly toLine?: number;
+  public tabWidth?: number;
+
+  /**
+   * Test and return options
+   * (attributes and parameters)
+   * of `::include-code` directive Node
+   *
+   * @param file - Current markdown file
+   * @param node - `::include-code` directive Node
+   * @param parameters - plugin parameters
+   * @throws `VFileMessage` if `file` attribute
+   *  for `::include-code` directive does not exists or empty
+   *
+   * @internal
+   */
+  public constructor(
+    file: VFile,
+    node: LeafDirective,
+    messagesScope: string,
+    parameters?: Parameters,
   ) {
-    attributes.encoding = editorconfigProperties.charset.toString();
+    super(file, node, messagesScope, parameters);
+
+    this.file = this.parseString('file', true);
+    this.optional = this.parseBoolean('optional') ?? false;
+    this.language = this.parseString('language') ?? '';
+    this.encoding = this.parseEncoding('encoding') ?? 'utf8';
+    this.trimFinalNewline = this.parseBoolean('trimFinalNewline') ?? false;
+    this.trimExtraIndent = this.parseBoolean('trimExtraIndent') ?? false;
+    this.useEditorConfig = this.parseBoolean('useEditorConfig') ?? false;
+    this.fromLine = this.parseInteger('fromLine');
+    this.toLine = this.parseInteger('toLine');
+    this.tabWidth = this.parseInteger('tabWidth');
+
+    this.assertNoUnknownAttributes();
   }
 
-  if (
-    (node.attributes?.tabWidth === undefined) &&
-    (editorconfigProperties.tab_width !== undefined)
-  ) {
-    attributes.tabWidth = Number(editorconfigProperties.tab_width);
+  override keyofParameters(): string[] {
+    const _parameters: Required<IParameters> = {
+      useEditorConfig: false,
+      trimFinalNewline: false,
+      optional: false,
+      trimExtraIndent: false
+    };
+    return Object.keys(_parameters);
   }
 
-  return attributes;
+  /**
+   * Update options of `::include-code`
+   * with .editorconfig properties for code file
+   *
+   * @param editorconfigProperties - properties from .editorconfig for code file
+   *
+   * @internal
+   */
+  set editorConfig(
+    editorconfigProperties: EditorConfigProperties
+  ) {
+    if (
+      (this._node.attributes?.encoding === undefined) &&
+      (editorconfigProperties.charset !== undefined)
+    ) {
+      this.encoding = editorconfigProperties.charset.toString();
+    }
+
+    if (
+      (this._node.attributes?.tabWidth === undefined) &&
+      (editorconfigProperties.tab_width !== undefined)
+    ) {
+      this.tabWidth = Number(editorconfigProperties.tab_width);
+    }
+  }
+
 }
