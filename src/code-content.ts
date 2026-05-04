@@ -20,14 +20,14 @@ export class CodeFileContent {
   protected readonly file: VFile;
   protected readonly node: LeafDirective;
   protected readonly attributes: IDirectiveAttributes;
-  protected fileContent: Buffer<ArrayBuffer>;
+  protected fileContent?: Buffer<ArrayBuffer>;
   protected _content: string;
 
   public constructor(
     file: VFile,
     node: LeafDirective,
     attributes: IDirectiveAttributes,
-    content: Buffer<ArrayBuffer>
+    content?: Buffer<ArrayBuffer>
   ) {
     this.file = file;
     this.node = node;
@@ -42,10 +42,7 @@ export class CodeFileContent {
     attributes: IDirectiveAttributes,
     path: string
   ): CodeFileContent {
-    const self = new CodeFileContent(
-      file, node, attributes,
-      Buffer.alloc(0)
-    );
+    const self = new CodeFileContent(file, node, attributes);
     try {
       self.fileContent = readFileSync(path);
     } catch (error) {
@@ -60,10 +57,7 @@ export class CodeFileContent {
     attributes: IDirectiveAttributes,
     path: string
   ): Promise<CodeFileContent> {
-    const self = new CodeFileContent(
-      file, node, attributes,
-      Buffer.alloc(0)
-    );
+    const self = new CodeFileContent(file, node, attributes);
     try {
       self.fileContent = await readFile(path);
     } catch (error) {
@@ -81,7 +75,8 @@ export class CodeFileContent {
   }
 
   public decode(): this {
-    this._content = iconv.decode(this.fileContent, this.attributes.encoding);
+    this._content = this.fileContent ?
+      iconv.decode(this.fileContent, this.attributes.encoding) : '';
     return this;
   }
 
