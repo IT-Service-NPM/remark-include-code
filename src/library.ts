@@ -1,6 +1,7 @@
 import type { Root, Parent } from 'mdast';
 import type { LeafDirective } from 'mdast-util-directive';
 import type { VFile } from 'vfile';
+import { VFileMessage } from 'vfile-message';
 import { visit } from 'unist-util-visit';
 
 export interface DirectiveInfo {
@@ -55,5 +56,18 @@ export function assertFileDirnameIsDefined(
     file.fail(
       '::include-code, unexpected error: "file" should be an instance of VFile with specified path'
     );
+  }
+}
+
+/**
+ * Catch non fatal VFileMessages
+ *
+ * @internal
+ */
+export function catchVFileMessages(
+  error: any
+): void {
+  if (!((error instanceof VFileMessage) && (!error.fatal))) {
+    throw error;
   }
 }

@@ -3,12 +3,12 @@ import type { Processor, Transformer, Preset, Plugin } from 'unified';
 import type { Root, Code } from 'mdast';
 import remarkDirective from 'remark-directive';
 import type { VFile } from 'vfile';
-import { VFileMessage } from 'vfile-message';
 import {
   parseSync as parseEditorConfigSync
 } from 'editorconfig';
 import {
   getIncludeDirectives, assertFileDirnameIsDefined,
+  catchVFileMessages
 } from './library.js';
 import {
   type IParameters,
@@ -73,9 +73,7 @@ export const remarkIncludeCode: Plugin<
             value: includedFileContent.content
           });
         } catch (error) {
-          if (!((error instanceof VFileMessage) && (!error.fatal))) {
-            throw error;
-          }
+          catchVFileMessages(error);
         }
         includeDirective.parent.children.splice(
           includeDirective.index, 1,
