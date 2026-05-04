@@ -58,6 +58,26 @@ to embed code files within your Markdown documents.
 With this plugin, you can use `::include-code{file="./included.ts"}`
 syntax to include code to markdown.
 
+Additional features:
+
+- Attribute `language` for select code language
+- Support for various code file encodings
+  with `encoding` attribute (`utf8` by default).
+  With `useEditorConfig` attribute or plugin parameter
+  `charset` property value from `.editorconfig` file used for `encoding`
+- Boolean attribute `optional`,
+  which disable fatal directive error when file does not exists
+- Deleting the last blank line
+  (with boolean `trimFinalNewline` attribute or plugin parameter)
+- Inserting a range of lines from a file
+  (with integer `fromLine` and `toLine` attributes)
+- Replacing tabs with a specified number (`tabWidth` attribute) of spaces.
+  With `useEditorConfig` attribute or plugin parameter
+  `tab_width` property value from `.editorconfig` used for `tabWidth`
+- Removing the extra indentation for a block of code
+  with `trimExtraIndent` attribute or parameter.
+  (`tabWidth` value expected!)
+
 There are two plugins: `remarkIncludeCode` (preferred) and `remarkIncludeCodeSync`.
 
 > [!IMPORTANT]
@@ -95,7 +115,7 @@ There are two plugins: `remarkIncludeCode` (preferred) and `remarkIncludeCodeSy
   - [Trim final newline](#trim-final-newline)
   - [Inserting a specified range of lines from a file](#inserting-a-specified-range-of-lines-from-afile)
   - [Tabs replacing with spaces](#tabs-replacing-withspaces)
-  - [Removing the general extra indentation for a block of code](#removing-the-general-extra-indentation-for-a-block-ofcode)
+  - [Removing the extra indentation for a block of code](#removing-the-extra-indentation-for-a-block-ofcode)
 - [API](#api)
 - [License](#license)
 
@@ -242,6 +262,10 @@ export function functionInIncluded1File(): void {
 
 You can define the code file encoding with `encoding` attribute.
 Default — `'utf8'`.
+
+> [!IMPORTANT]
+> With `useEditorConfig` attribute or plugin parameter
+> `charset` property value from `.editorconfig` file used for `encoding`
 
 Source files:
 
@@ -457,6 +481,11 @@ Hello. I am an main markdown file with `::include-code` directive.
 
 `::include-code` replace tabs in code with spaces if `tabWidth` attribute specified.
 
+> [!IMPORTANT]
+> With `useEditorConfig` attribute or plugin parameter
+> `tab_width` property value from `.editorconfig`
+> used for `tabWidth`.
+
 Source files:
 
 main.md:
@@ -538,11 +567,16 @@ export async function remarkDirectiveUsingExample(
 };
 ```
 
-### Removing the general extra indentation for a block of code
+### Removing the extra indentation for a block of code
 
 You can remove extra indentation with `trimExtraIndent` attribute or parameter
 (for example, if You insert a specified range of lines from a file
 with `fromLine` and `toLine` attributes).
+
+> [!IMPORTANT]
+> `tabWidth` value expected
+> (or `tab_width` property value from `.editorconfig`
+> with `useEditorConfig` attribute or parameter).
 
 Source files:
 

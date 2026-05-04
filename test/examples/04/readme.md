@@ -3,6 +3,10 @@
 You can define the code file encoding with `encoding` attribute.
 Default — `'utf8'`.
 
+> [!IMPORTANT]
+> With `useEditorConfig` attribute or plugin parameter
+> `charset` property value from `.editorconfig` file used for `encoding`
+
 Source files:
 
 main.md:

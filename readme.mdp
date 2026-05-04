@@ -58,6 +58,26 @@ to embed code files within your Markdown documents.
 With this plugin, you can use `::include-code{file="./included.ts"}`
 syntax to include code to markdown.
 
+Additional features:
+
+- Attribute `language` for select code language
+- Support for various code file encodings
+  with `encoding` attribute (`utf8` by default).
+  With `useEditorConfig` attribute or plugin parameter
+  `charset` property value from `.editorconfig` file used for `encoding`
+- Boolean attribute `optional`,
+  which disable fatal directive error when file does not exists
+- Deleting the last blank line
+  (with boolean `trimFinalNewline` attribute or plugin parameter)
+- Inserting a range of lines from a file
+  (with integer `fromLine` and `toLine` attributes)
+- Replacing tabs with a specified number (`tabWidth` attribute) of spaces.
+  With `useEditorConfig` attribute or plugin parameter
+  `tab_width` property value from `.editorconfig` used for `tabWidth`
+- Removing the extra indentation for a block of code
+  with `trimExtraIndent` attribute or parameter.
+  (`tabWidth` value expected!)
+
 There are two plugins: `remarkIncludeCode` (preferred) and `remarkIncludeCodeSync`.
 
 > [!IMPORTANT]

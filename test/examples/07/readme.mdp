@@ -2,6 +2,12 @@
 
 `::include-code` replace tabs in code with spaces if `tabWidth` attribute specified.
 
+> [!IMPORTANT]
+>
+> With `useEditorConfig` attribute or plugin parameter
+> `tab_width` property value from `.editorconfig`
+> used for `tabWidth`.
+
 Source files:
 
 main.md:
