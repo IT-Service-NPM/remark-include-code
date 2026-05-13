@@ -33,8 +33,6 @@ export const remarkIncludeCode: Plugin<
   parameters?: IParameters
 ): Transformer<Root> {
 
-    // const processor: Processor = this;
-
     return function (tree: Root, file: VFile): Root {
       const includeDirectives = getIncludeDirectives(tree, file);
       assertFileDirnameIsDefined(file);
@@ -81,7 +79,7 @@ export const remarkIncludeCode: Plugin<
 /**
  * Preset of Remark plugins:
  *
- * - {@link remarkIncludeCodeSync}
+ * - {@link remarkIncludeCode}
  *
  * - {@link https://www.npmjs.com/package/remark-directive|remarkDirective}
  *

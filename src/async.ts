@@ -33,8 +33,6 @@ export const remarkIncludeCode: Plugin<
   parameters?: IParameters
 ): Transformer<Root> {
 
-    // const processor: Processor = this;
-
     return async function (tree: Root, file: VFile): Promise<Root> {
       const includeDirectives = getIncludeDirectives(tree, file);
       assertFileDirnameIsDefined(file);

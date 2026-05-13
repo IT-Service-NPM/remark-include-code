@@ -6,7 +6,7 @@
 
 Preset of Remark plugins:
 
-- [remarkIncludeCodeSync](./remark-include-code.remarkincludecodesync.md)
+- [remarkIncludeCode](./remark-include-code.remarkincludecode.md)
 
 - [remarkDirective](https://www.npmjs.com/package/remark-directive)
 
