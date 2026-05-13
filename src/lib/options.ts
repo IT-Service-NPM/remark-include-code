@@ -1,8 +1,8 @@
 import type { VFile } from 'vfile';
 import type { Directives } from 'mdast-util-directive';
-import * as OptionTypes from './option-types.js';
-import { EncodingOption } from './option-encoding.js';
-import { Options as _Options } from './options-types.js';
+import * as OptionTypes from './option-types.ts';
+import { EncodingOption } from './option-encoding.ts';
+import { Options as _Options } from './options-types.ts';
 import type { Encoding } from 'iconv-lite';
 import type {
   Props as EditorConfigProperties

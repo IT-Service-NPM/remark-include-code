@@ -1,4 +1,4 @@
-import { Option } from './option-types.js';
+import { Option } from './option-types.ts';
 import { type Encoding, encodingExists } from 'iconv-lite';
 
 export class EncodingOption<

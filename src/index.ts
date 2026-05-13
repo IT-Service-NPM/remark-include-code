@@ -12,8 +12,8 @@
 export {
   remarkIncludeCode as remarkIncludeCodeSync,
   remarkIncludeCodePreset as remarkIncludeCodePresetSync
-} from './sync.js';
+} from './sync.ts';
 export {
   remarkIncludeCode,
   remarkIncludeCodePreset, remarkIncludeCodePreset as default
-} from './async.js';
+} from './async.ts';

@@ -132,11 +132,9 @@ export class Boolean<
         case '':
         case 'true': {
           return true;
-          break;
         }
         case 'false': {
           return false;
-          break;
         }
         default: {
           this.assertValueIsValid(false, value);
