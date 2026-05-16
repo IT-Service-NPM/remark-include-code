@@ -44,7 +44,7 @@ importers:
         version: 1.2.3
       '@it-service-npm/remark-include':
         specifier: ^6.0.5
-        version: 6.0.5
+        version: 6.0.6
       '@it-service-npm/remark-relative-url-adjustment':
         specifier: ^1.1.1
         version: 1.1.1
@@ -487,8 +487,12 @@ packages:
     resolution: {integrity: sha512-tnTRxi+FLquisQR/SoIoBjoP1Z/yHOeGD8p+CMk5IzNb4iSt5kEW+EN4YY8DxT+mDe32z5GYYymoLra2ofSTBw==}
     engines: {node: '>=22.17'}
 
-  '@it-service-npm/remark-include@6.0.5':
-    resolution: {integrity: sha512-KiC1Y8lVn1n9MwCEgxBeGR2hJJeytTWKCHYjQsWekjKiqg7WcRfCj+jgpG2wgjmX4bbdeyTYubGhtEbwTpYMLQ==}
+  '@it-service-npm/remark-heading-adjustment@1.2.4':
+    resolution: {integrity: sha512-2kNrNZKTtkSqIzuwHYxTIGZiNxib1tS5YpA548Oab8TbBJBY+wBv+uacJetlWOPt7p2xVqRm5v3A1RBH4fgzpw==}
+    engines: {node: '>=22.17'}
+
+  '@it-service-npm/remark-include@6.0.6':
+    resolution: {integrity: sha512-kL4DKTx6IS6lT+X6nGjx4YmCGpSXNAHUYGnUiQaLVpEhZE9EO67aswAAJswkHH7bXA0he9IHdk97HEUu0YtJ/Q==}
     engines: {node: '>=22.17'}
 
   '@it-service-npm/remark-relative-url-adjustment@1.1.1':
@@ -2903,10 +2907,18 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@it-service-npm/remark-include@6.0.5':
+  '@it-service-npm/remark-heading-adjustment@1.2.4':
+    dependencies:
+      remark: 15.0.1
+      remark-directive: 4.0.0
+      unist-util-visit: 5.1.0
+    transitivePeerDependencies:
+      - supports-color
+
+  '@it-service-npm/remark-include@6.0.6':
     dependencies:
       '@it-service-npm/remark-code-path-adjustment': 1.0.2
-      '@it-service-npm/remark-heading-adjustment': 1.2.3
+      '@it-service-npm/remark-heading-adjustment': 1.2.4
       '@it-service-npm/remark-relative-url-adjustment': 1.1.1
       remark-directive: 4.0.0
       to-vfile: 8.0.0
