@@ -8,7 +8,7 @@ import {
 } from 'editorconfig';
 import {
   getIncludeDirectives, assertFileDirnameIsDefined,
-  catchVFileMessages
+  assertErrorIsVFileMessage
 } from './lib/library.ts';
 import { type IParameters, Options } from './lib/options.ts';
 import { CodeFileContent } from './lib/code-content.ts';
@@ -65,7 +65,7 @@ export const remarkIncludeCode: Plugin<
             value: includedFileContent.content
           });
         } catch (error) {
-          catchVFileMessages(error);
+          assertErrorIsVFileMessage(error);
         }
         includeDirective.parent.children.splice(
           includeDirective.index, 1,

@@ -60,13 +60,13 @@ export function assertFileDirnameIsDefined(
 }
 
 /**
- * Catch non fatal VFileMessages
+ * Catch non fatal VFileMessage
  *
  * @internal
  */
-export function catchVFileMessages(
+export function assertErrorIsVFileMessage(
   error: any
-): void {
+): asserts error is VFileMessage & { fatal: false } {
   if (!((error instanceof VFileMessage) && (!error.fatal))) {
     throw error;
   }
