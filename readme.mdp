@@ -65,8 +65,9 @@ Additional features:
   with `encoding` attribute (`utf8` by default).
   With `useEditorConfig` attribute or plugin parameter
   `charset` property value from `.editorconfig` file used for `encoding`
-- Boolean attribute `optional`,
-  which disable fatal directive error when file does not exists
+- Boolean attribute `optional`.
+  This attribute prevents fatal errors from occurring
+  when the file specified by the `file` attribute does not exists
 - Deleting the last blank line
   (with boolean `trimFinalNewline` attribute or plugin parameter)
 - Inserting a range of lines from a file
