@@ -11,6 +11,7 @@ import {
   assertErrorIsVFileMessage
 } from './lib/library.ts';
 import { type IParameters, Options } from './lib/options.ts';
+export type { IParameters } from './lib/options.ts';
 import { CodeFileContent } from './lib/code-content.ts';
 
 /**

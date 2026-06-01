@@ -8,8 +8,14 @@ import type { Plugin } from 'unified';
 import type { Preset } from 'unified';
 import type { Root } from 'mdast';
 
-// Warning: (ae-forgotten-export) The symbol "IParameters" needs to be exported by the entry point index.d.ts
-//
+// @public
+export interface IParameters {
+    readonly optional?: boolean;
+    readonly trimExtraIndent?: boolean;
+    readonly trimFinalNewline?: boolean;
+    readonly useEditorConfig?: boolean;
+}
+
 // @public
 export const remarkIncludeCode: Plugin<[
 IParameters?

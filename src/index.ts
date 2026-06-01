@@ -17,3 +17,4 @@ export {
   remarkIncludeCode,
   remarkIncludeCodePreset, remarkIncludeCodePreset as default
 } from './async.ts';
+export type { IParameters } from './lib/options.ts';

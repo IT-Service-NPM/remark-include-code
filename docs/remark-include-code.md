@@ -8,6 +8,32 @@ The `@it-service-npm/remark-include-code` package allows you to embed code files
 
 This plugin allows you to incorporate code into your markdown using the `::include-code{file="./included.ts"}` syntax.
 
+## Interfaces
+
+<table><thead><tr><th>
+
+Interface
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[IParameters](./remark-include-code.iparameters.md)
+
+
+</td><td>
+
+Plugin parameters
+
+
+</td></tr>
+</tbody></table>
+
 ## Variables
 
 <table><thead><tr><th>
