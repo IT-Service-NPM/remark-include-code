@@ -13,6 +13,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.4](https://github.com/IT-Service-NPM/remark-include-code/compare/v2.3.3...v2.3.4) (2026-06-01)
+
+
+### Bug Fixes
+
+* export `IParameters` type ([db1b9d3](https://github.com/IT-Service-NPM/remark-include-code/commit/db1b9d3691dc2c4ba9f4b885947f1d432c132751))
+
 ## [2.3.3](https://github.com/IT-Service-NPM/remark-include-code/compare/v2.3.2...v2.3.3) (2026-05-04)
 
 * refactor - add `catchVFileMessages`
