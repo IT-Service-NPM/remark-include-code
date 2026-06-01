@@ -1,7 +1,7 @@
 {
 	"name": "@it-service-npm/remark-include-code",
 	"type": "module",
-	"version": "2.3.3",
+	"version": "2.3.4",
 	"description": "Plugin to add ::include-code{file=path.ts} directive to remark",
 	"keywords": [
 		"markdown",
