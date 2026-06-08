@@ -31,6 +31,7 @@
 	"main": "./dist/index.js",
 	"module": "./dist/index.js",
 	"types": "./dist/index.d.ts",
+	"tsdocMetadata": "./api/tsdoc-metadata.json",
 	"exports": {
 		"./package.json": "./package.json",
 		".": "./dist/index.js",
@@ -49,7 +50,8 @@
 	},
 	"files": [
 		"dist",
-		"api/*.api.md"
+		"api/*.api.md",
+		"api/tsdoc-metadata.json"
 	],
 	"scripts": {
 		"build": "tsc --build --clean && tsc --build",

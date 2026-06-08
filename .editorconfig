@@ -39,5 +39,8 @@ end_of_line = lf
 indent_style = tab
 indent_size = 2
 
+[api/tsdoc-metadata.json]
+indent_style = space
+
 [*.bat]
 charset = IBM866
