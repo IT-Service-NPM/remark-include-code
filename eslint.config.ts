@@ -111,14 +111,15 @@ export default defineConfig([
     },
   },
   {
-    files: ['test/**/*.test.ts'],
+    files: ['test/**/*.ts'],
     plugins: {
       n: ESLintPluginN,
       '@stylistic': ESLintPluginStylistic,
       prettier: ESLintPluginPrettier
     },
     rules: {
-      'max-statements': 'off'
+      'max-statements': 'off',
+      'unicorn/filename-case': 'off'
     },
     settings: {
     },

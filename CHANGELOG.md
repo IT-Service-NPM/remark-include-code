@@ -13,6 +13,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.5](https://github.com/IT-Service-NPM/remark-include-code/compare/v2.3.4...v2.3.5) (2026-06-08)
+
+
+### Bug Fixes
+
+* fix IParameters TSDoc ([617e6f6](https://github.com/IT-Service-NPM/remark-include-code/commit/617e6f68c2ce565a174f6ef99e7c03502663f38b))
+
 ## [2.3.4](https://github.com/IT-Service-NPM/remark-include-code/compare/v2.3.3...v2.3.4) (2026-06-01)
 
 

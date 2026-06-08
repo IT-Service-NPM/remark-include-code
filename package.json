@@ -22,7 +22,11 @@
 	},
 	"license": "MIT",
 	"engines": {
-		"node": ">=22.17"
+		"runtime": {
+			"name": "node",
+			"version": ">=24",
+			"onFail": "download"
+		}
 	},
 	"main": "./dist/index.js",
 	"module": "./dist/index.js",
@@ -60,7 +64,7 @@
 		"build:readme": "pnpm run build:readme:examples && pnpm run build:readme:main",
 		"build:changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
 	},
-	"packageManager": "pnpm@11.5.0",
+	"packageManager": "pnpm@11.5.2",
 	"dependencies": {
 		"editorconfig": "^3.0.2",
 		"iconv-lite": "^0.7.2",

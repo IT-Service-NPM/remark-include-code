@@ -137,7 +137,7 @@ export class CodeFileContent {
         Math.min.apply(null, indentsWidth) : 0;
       if (extraIndentWidth) {
         this._content = this._content.replaceAll(
-          new RegExp(String.raw`^ {${extraIndentWidth.toString()}}`, 'gm'),
+          new RegExp(`^ {${extraIndentWidth.toString()}}`, 'gm'),
           ''
         );
       }
