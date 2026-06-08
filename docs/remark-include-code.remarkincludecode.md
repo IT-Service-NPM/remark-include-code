@@ -13,7 +13,5 @@ This plugin allows you to incorporate code into your markdown using the `::inclu
 **Signature:**
 
 ```typescript
-remarkIncludeCode: Plugin<[
-    IParameters?
-], Root>
+remarkIncludeCode: Plugin<[IParameters?], Root>
 ```

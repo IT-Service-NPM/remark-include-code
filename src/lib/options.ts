@@ -10,6 +10,8 @@ import type {
 
 /**
 * Plugin parameters
+*
+* @public
 */
 export interface IParameters {
 

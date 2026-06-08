@@ -17,9 +17,7 @@ export interface IParameters {
 }
 
 // @public
-export const remarkIncludeCode: Plugin<[
-IParameters?
-], Root>;
+export const remarkIncludeCode: Plugin<[IParameters?], Root>;
 
 // @public
 const remarkIncludeCodePreset: Preset;
@@ -30,8 +28,6 @@ export { remarkIncludeCodePreset }
 export const remarkIncludeCodePresetSync: Preset;
 
 // @public
-export const remarkIncludeCodeSync: Plugin<[
-IParameters?
-], Root>;
+export const remarkIncludeCodeSync: Plugin<[IParameters?], Root>;
 
 ```

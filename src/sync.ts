@@ -26,56 +26,53 @@ import { CodeFileContent } from './lib/code-content.ts';
  *
  * @public
  */
-export const remarkIncludeCode: Plugin<
-  [IParameters?],
-  Root
-> = function (
+export const remarkIncludeCode: Plugin<[IParameters?], Root> = function (
   this: Processor,
   parameters?: IParameters
 ): Transformer<Root> {
 
-    return function (tree: Root, file: VFile): Root {
-      const includeDirectives = getIncludeDirectives(tree, file);
-      assertFileDirnameIsDefined(file);
-      const fileDirname = path.resolve(file.dirname);
-      for (const includeDirective of includeDirectives) {
-        const includedContent: Code[] = [];
-        try {
-          const options = new Options(
-            file, includeDirective.node,
-            '`::include-code`',
-            parameters
-          );
-          const includedFilePath = path.resolve(fileDirname, options.file);
-          if (options.useEditorConfig) {
-            options.editorConfig = parseEditorConfigSync(includedFilePath);
-          }
-          const includedFileContent = CodeFileContent.readFileSync(
-            file, includeDirective.node, options,
-            includedFilePath
-          )
-            .decode()
-            .normalizeEOL()
-            .trimFinalNewline()
-            .selectLinesRange()
-            .replaceTabs()
-            .normalizeIndent();
-          includedContent.push({
-            type: 'code',
-            lang: options.language,
-            value: includedFileContent.content
-          });
-        } catch (error) {
-          assertErrorIsVFileMessage(error);
-        }
-        includeDirective.parent.children.splice(
-          includeDirective.index, 1,
-          ...includedContent
+  return function (tree: Root, file: VFile): Root {
+    const includeDirectives = getIncludeDirectives(tree, file);
+    assertFileDirnameIsDefined(file);
+    const fileDirname = path.resolve(file.dirname);
+    for (const includeDirective of includeDirectives) {
+      const includedContent: Code[] = [];
+      try {
+        const options = new Options(
+          file, includeDirective.node,
+          '`::include-code`',
+          parameters
         );
+        const includedFilePath = path.resolve(fileDirname, options.file);
+        if (options.useEditorConfig) {
+          options.editorConfig = parseEditorConfigSync(includedFilePath);
+        }
+        const includedFileContent = CodeFileContent.readFileSync(
+          file, includeDirective.node, options,
+          includedFilePath
+        )
+          .decode()
+          .normalizeEOL()
+          .trimFinalNewline()
+          .selectLinesRange()
+          .replaceTabs()
+          .normalizeIndent();
+        includedContent.push({
+          type: 'code',
+          lang: options.language,
+          value: includedFileContent.content
+        });
+      } catch (error) {
+        assertErrorIsVFileMessage(error);
       }
-      return tree;
-    };
+      includeDirective.parent.children.splice(
+        includeDirective.index, 1,
+        ...includedContent
+      );
+    }
+    return tree;
   };
+};
 
 /**
  * Preset of Remark plugins:
