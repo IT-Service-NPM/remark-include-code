@@ -132,13 +132,8 @@ export class CodeFileContent {
       (this.attributes.tabWidth !== undefined)
     ) {
       // eslint-disable-next-line sonarjs/slow-regex
-      const indentsWidth = [...this._content.matchAll(/^\s*(?=\S)/gmd)
-        .map(
-          (match): number =>
-            match.indices?.[0]
-              ? match.indices[0][1] - match.indices[0][0]
-              : 0
-        )
+      const indentsWidth = [...this._content.matchAll(/^\s*(?=\S)/gm)
+        .map((match): number => match[0].length)
       ];
       const extraIndentWidth = indentsWidth.length > 0 ?
         Math.min(...indentsWidth) : 0;
@@ -154,7 +149,7 @@ export class CodeFileContent {
 
   protected catchFileError(error: unknown): void {
     if (isEnoentError(error)) {
-      const errorMessage = `::include-code, file(s) "${this.attributes.file}" not found`;
+      const errorMessage = `::include-code, file "${this.attributes.file}" not found`;
       if (this.attributes.optional) {
         throw this.file.info(errorMessage, this.node);
       } else {
