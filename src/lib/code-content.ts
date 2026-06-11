@@ -112,15 +112,18 @@ export class CodeFileContent {
     return this;
   }
 
+  private buildTabReplacementPattern(tabWidth: number): RegExp {
+    return new RegExp(
+      String.raw`(?<=^( {${tabWidth.toString()}}| {0,${(tabWidth - 1).toString()}}\t)*) {0,${(tabWidth - 1).toString()}}\t`,
+      'gm'
+    );
+  }
+
   public replaceTabs(): this {
     if (this.attributes.tabWidth !== undefined) {
-      const w = this.attributes.tabWidth;
       this._content = this._content.replaceAll(
-        new RegExp(
-          String.raw`(?<=^( {${w.toString()}}| {0,${(w - 1).toString()}}\t)*) {0,${(w - 1).toString()}}\t`,
-          'gm'
-        ),
-        ' '.repeat(w)
+        this.buildTabReplacementPattern(this.attributes.tabWidth),
+        ' '.repeat(this.attributes.tabWidth)
       );
     }
     return this;
@@ -131,10 +134,11 @@ export class CodeFileContent {
       this.attributes.trimExtraIndent &&
       (this.attributes.tabWidth !== undefined)
     ) {
-      // eslint-disable-next-line sonarjs/slow-regex
-      const indentWidths = [...this._content.matchAll(/^\s*(?=\S)/gm)
-        .map((match): number => match[0].length)
-      ];
+      const indentWidths = Array.from(
+        // eslint-disable-next-line sonarjs/slow-regex
+        this._content.matchAll(/^\s*(?=\S)/gm),
+        (match): number => match[0].length
+      );
       const extraIndentWidth = indentWidths.length > 0 ?
         Math.min(...indentWidths) : 0;
       if (extraIndentWidth) {
