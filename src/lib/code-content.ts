@@ -132,9 +132,7 @@ export class CodeFileContent {
           ): number =>
             indentPosition ? indentPosition[1] - indentPosition[0] : 0
         );
-      const extraIndentWidth = indentsWidth ?
-        // eslint-disable-next-line unicorn/no-null
-        Math.min.apply(null, indentsWidth) : 0;
+      const extraIndentWidth = indentsWidth ? Math.min(...indentsWidth) : 0;
       if (extraIndentWidth) {
         this._content = this._content.replaceAll(
           new RegExp(`^ {${extraIndentWidth.toString()}}`, 'gm'),
