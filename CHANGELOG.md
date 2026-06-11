@@ -13,6 +13,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.6](https://github.com/IT-Service-NPM/remark-include-code/compare/v2.3.5...v2.3.6) (2026-06-11)
+
+
+### Bug Fixes
+
+* fix TSDoc `tabWidth` refs and... ([b1ed9b3](https://github.com/IT-Service-NPM/remark-include-code/commit/b1ed9b3ff783d83821239c4bca1f8cacb90163c1))
+
 ## [2.3.5](https://github.com/IT-Service-NPM/remark-include-code/compare/v2.3.4...v2.3.5) (2026-06-08)
 
 ### Bug Fixes
