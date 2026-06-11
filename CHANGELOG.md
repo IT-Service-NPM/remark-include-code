@@ -15,24 +15,24 @@ All notable changes to this project will be documented in this file. See
 
 ## [2.3.8](https://github.com/IT-Service-NPM/remark-include-code/compare/v2.3.7...v2.3.8) (2026-06-11)
 
-
 ### Performance Improvements
 
-* optimize `normalizeIndent` ([ef3c9b0](https://github.com/IT-Service-NPM/remark-include-code/commit/ef3c9b08f7601ee6997c892b4cbdc8d55fec5b08))
+* optimize `normalizeIndent`
+  ([ef3c9b0](https://github.com/IT-Service-NPM/remark-include-code/commit/ef3c9b08f7601ee6997c892b4cbdc8d55fec5b08))
 
 ## [2.3.7](https://github.com/IT-Service-NPM/remark-include-code/compare/v2.3.6...v2.3.7) (2026-06-11)
 
-
 ### Bug Fixes
 
-* fix `normalizeIndent` ([4ffe12b](https://github.com/IT-Service-NPM/remark-include-code/commit/4ffe12b9afe49d4cc3a4a71151aa86b5cc1956f4))
+* fix `normalizeIndent`
+  ([4ffe12b](https://github.com/IT-Service-NPM/remark-include-code/commit/4ffe12b9afe49d4cc3a4a71151aa86b5cc1956f4))
 
 ## [2.3.6](https://github.com/IT-Service-NPM/remark-include-code/compare/v2.3.5...v2.3.6) (2026-06-11)
 
-
 ### Bug Fixes
 
-* fix TSDoc `tabWidth` refs and... ([b1ed9b3](https://github.com/IT-Service-NPM/remark-include-code/commit/b1ed9b3ff783d83821239c4bca1f8cacb90163c1))
+* fix TSDoc `tabWidth` refs
+  ([b1ed9b3](https://github.com/IT-Service-NPM/remark-include-code/commit/b1ed9b3ff783d83821239c4bca1f8cacb90163c1))
 
 ## [2.3.5](https://github.com/IT-Service-NPM/remark-include-code/compare/v2.3.4...v2.3.5) (2026-06-08)
 
