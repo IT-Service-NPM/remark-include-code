@@ -95,8 +95,6 @@ All notable changes to this project will be documented in this file. See
 * convert CRLF in code files to LF
   ([6eabb47](https://github.com/IT-Service-NPM/remark-include-code/commit/6eabb47c0158d964125f37eec73cbbeafa07b69e))
 
-### Features
-
 * add `encoding` attribute support
   ([3316250](https://github.com/IT-Service-NPM/remark-include-code/commit/331625004f42cc27f70393adb925202c4330ddf8))
 
