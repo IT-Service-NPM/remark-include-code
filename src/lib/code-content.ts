@@ -55,7 +55,7 @@ export class CodeFileContent {
     try {
       self.fileContent = readFileSync(path);
     } catch (error) {
-      self.catchFileError(error);
+      self.handleFileError(error);
     }
     return self;
   }
@@ -70,7 +70,7 @@ export class CodeFileContent {
     try {
       self.fileContent = await readFile(path);
     } catch (error) {
-      self.catchFileError(error);
+      self.handleFileError(error);
     }
     return self;
   }
