@@ -47,7 +47,7 @@ export class CodeFileContent {
       self.fileContent = readFileSync(path);
     } catch (error) {
       self.catchFileError(error);
-    };
+    }
     return self;
   }
 
@@ -62,7 +62,7 @@ export class CodeFileContent {
       self.fileContent = await readFile(path);
     } catch (error) {
       self.catchFileError(error);
-    };
+    }
     return self;
   }
 
@@ -145,7 +145,7 @@ export class CodeFileContent {
     return this;
   }
 
-  protected catchFileError(error: any): void {
+  protected catchFileError(error: unknown): void {
     if (error instanceof Error && 'code' in error && error.code === 'ENOENT') {
       const errorMessage = `::include-code, file(s) "${this.attributes.file}" not found`;
       if (this.attributes.optional) {

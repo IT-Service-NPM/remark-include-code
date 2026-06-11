@@ -8,7 +8,7 @@ use .editorconfig file if attribute value is not provided:
 
 - `charset` (if `encoding` attribute is not provided)
 
-- `indent_size` (if `tabSize` attribute is not provided)
+- `indent_size` (if `tabWidth` attribute is not provided)
 
 **Signature:**
 
