@@ -20,7 +20,7 @@ export interface IParameters {
    *
    * - `charset` (if `encoding` attribute is not provided)
    *
-   * - `indent_size` (if `tabSize` attribute is not provided)
+   * - `indent_size` (if `tabWidth` attribute is not provided)
    */
   readonly useEditorConfig?: boolean;
 
