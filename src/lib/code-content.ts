@@ -5,6 +5,15 @@ import type { VFile } from 'vfile';
 import iconv from 'iconv-lite';
 import type { IAttributes } from './options.js';
 
+function isEnoentError(error: unknown): error is NodeJS.ErrnoException {
+  return (
+    error instanceof Error &&
+    'code' in error &&
+    typeof (error as { code?: unknown }).code === 'string' &&
+    (error as { code?: string }).code === 'ENOENT'
+  );
+}
+
 /**
  * Class for code file content
  *
@@ -20,14 +29,14 @@ export class CodeFileContent {
   protected readonly file: VFile;
   protected readonly node: LeafDirective;
   protected readonly attributes: IAttributes;
-  protected fileContent?: Buffer<ArrayBuffer>;
+  protected fileContent?: Buffer;
   protected _content: string;
 
   public constructor(
     file: VFile,
     node: LeafDirective,
     attributes: IAttributes,
-    content?: Buffer<ArrayBuffer>
+    content?: Buffer
   ) {
     this.file = file;
     this.node = node;
@@ -123,16 +132,16 @@ export class CodeFileContent {
       (this.attributes.tabWidth !== undefined)
     ) {
       // eslint-disable-next-line sonarjs/slow-regex
-      const indentsWidth = /^\s*(?=\S)/gmd
-        .exec(this._content)
-        ?.indices
-        ?.map(
-          (
-            indentPosition?: [number, number]
-          ): number =>
-            indentPosition ? indentPosition[1] - indentPosition[0] : 0
-        );
-      const extraIndentWidth = indentsWidth ? Math.min(...indentsWidth) : 0;
+      const indentsWidth = [...this._content.matchAll(/^\s*(?=\S)/gmd)
+        .map(
+          (match): number =>
+            match.indices?.[0]
+              ? match.indices[0][1] - match.indices[0][0]
+              : 0
+        )
+      ];
+      const extraIndentWidth = indentsWidth.length > 0 ?
+        Math.min(...indentsWidth) : 0;
       if (extraIndentWidth) {
         this._content = this._content.replaceAll(
           new RegExp(`^ {${extraIndentWidth.toString()}}`, 'gm'),
@@ -144,7 +153,7 @@ export class CodeFileContent {
   }
 
   protected catchFileError(error: unknown): void {
-    if (error instanceof Error && 'code' in error && error.code === 'ENOENT') {
+    if (isEnoentError(error)) {
       const errorMessage = `::include-code, file(s) "${this.attributes.file}" not found`;
       if (this.attributes.optional) {
         throw this.file.info(errorMessage, this.node);
