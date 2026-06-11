@@ -132,11 +132,11 @@ export class CodeFileContent {
       (this.attributes.tabWidth !== undefined)
     ) {
       // eslint-disable-next-line sonarjs/slow-regex
-      const indentsWidth = [...this._content.matchAll(/^\s*(?=\S)/gm)
+      const indentWidths = [...this._content.matchAll(/^\s*(?=\S)/gm)
         .map((match): number => match[0].length)
       ];
-      const extraIndentWidth = indentsWidth.length > 0 ?
-        Math.min(...indentsWidth) : 0;
+      const extraIndentWidth = indentWidths.length > 0 ?
+        Math.min(...indentWidths) : 0;
       if (extraIndentWidth) {
         this._content = this._content.replaceAll(
           new RegExp(`^ {${extraIndentWidth.toString()}}`, 'gm'),
