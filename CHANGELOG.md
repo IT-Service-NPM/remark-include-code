@@ -13,6 +13,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.8](https://github.com/IT-Service-NPM/remark-include-code/compare/v2.3.7...v2.3.8) (2026-06-11)
+
+
+### Performance Improvements
+
+* optimize `normalizeIndent` ([ef3c9b0](https://github.com/IT-Service-NPM/remark-include-code/commit/ef3c9b08f7601ee6997c892b4cbdc8d55fec5b08))
+
 ## [2.3.7](https://github.com/IT-Service-NPM/remark-include-code/compare/v2.3.6...v2.3.7) (2026-06-11)
 
 
