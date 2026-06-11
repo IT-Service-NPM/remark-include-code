@@ -55,7 +55,7 @@ export class CodeFileContent {
     try {
       self.fileContent = readFileSync(path);
     } catch (error) {
-      self.catchFileError(error);
+      self.handleFileError(error);
     }
     return self;
   }
@@ -70,7 +70,7 @@ export class CodeFileContent {
     try {
       self.fileContent = await readFile(path);
     } catch (error) {
-      self.catchFileError(error);
+      self.handleFileError(error);
     }
     return self;
   }
@@ -132,11 +132,11 @@ export class CodeFileContent {
       (this.attributes.tabWidth !== undefined)
     ) {
       // eslint-disable-next-line sonarjs/slow-regex
-      const indentsWidth = [...this._content.matchAll(/^\s*(?=\S)/gm)
+      const indentWidths = [...this._content.matchAll(/^\s*(?=\S)/gm)
         .map((match): number => match[0].length)
       ];
-      const extraIndentWidth = indentsWidth.length > 0 ?
-        Math.min(...indentsWidth) : 0;
+      const extraIndentWidth = indentWidths.length > 0 ?
+        Math.min(...indentWidths) : 0;
       if (extraIndentWidth) {
         this._content = this._content.replaceAll(
           new RegExp(`^ {${extraIndentWidth.toString()}}`, 'gm'),
@@ -147,7 +147,7 @@ export class CodeFileContent {
     return this;
   }
 
-  protected catchFileError(error: unknown): void {
+  protected handleFileError(error: unknown): void {
     if (isEnoentError(error)) {
       const errorMessage = `::include-code, file "${this.attributes.file}" not found`;
       if (this.attributes.optional) {
