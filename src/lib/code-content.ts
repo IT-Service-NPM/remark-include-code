@@ -147,7 +147,7 @@ export class CodeFileContent {
     return this;
   }
 
-  protected catchFileError(error: unknown): void {
+  protected handleFileError(error: unknown): void {
     if (isEnoentError(error)) {
       const errorMessage = `::include-code, file "${this.attributes.file}" not found`;
       if (this.attributes.optional) {
