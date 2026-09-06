@@ -47,37 +47,37 @@
 
 [coverage-url]: https://coveralls.io/github/IT-Service-NPM/remark-include-code?branch=main
 
-The `@it-service-npm/remark-include-code` package allows you
+The `@it-service-npm/remark-include-code` package allows you
 to embed code files within your Markdown documents.
 
-With this plugin, you can use `::include-code{file="./included.ts"}`
+With this plugin, you can use `::include-code{file="./included.ts"}`
 syntax to include code to markdown.
 
 Additional features:
 
 - Attribute `language` for select code language
 - Support for various code file encodings
-  with `encoding` attribute (`utf8` by default).
+  with `encoding` attribute (`utf8` by default).
   With `useEditorConfig` attribute or plugin parameter
-  `charset` property value from `.editorconfig` file used for `encoding`
+  `charset` property value from `.editorconfig` file used for `encoding`
 - Boolean attribute `optional`.
   This attribute prevents fatal errors from occurring
-  when the file specified by the `file` attribute does not exists
+  when the file specified by the `file` attribute does not exists
 - Deleting the last blank line
   (with boolean `trimFinalNewline` attribute or plugin parameter)
 - Inserting a range of lines from a file
-  (with integer `fromLine` and `toLine` attributes)
-- Replacing tabs with a specified number (`tabWidth` attribute) of spaces.
+  (with integer `fromLine` and `toLine` attributes)
+- Replacing tabs with a specified number (`tabWidth` attribute) of spaces.
   With `useEditorConfig` attribute or plugin parameter
-  `tab_width` property value from `.editorconfig` used for `tabWidth`
+  `tab_width` property value from `.editorconfig` used for `tabWidth`
 - Removing the extra indentation for a block of code
-  with `trimExtraIndent` attribute or parameter.
+  with `trimExtraIndent` attribute or parameter.
   (`tabWidth` value expected!)
 
-There are two plugins: `remarkIncludeCode` (preferred) and `remarkIncludeCodeSync`.
+There are two plugins: `remarkIncludeCode` (preferred) and `remarkIncludeCodeSync`.
 
 > [!IMPORTANT]
-> [`remark-directive`][] plugin expected before
+> [`remark-directive`][] plugin expected before
 > `@it-service-npm/remark-include-code`.
 >
 > This package provides two plugins presets:
@@ -126,7 +126,7 @@ npm install --save-dev @it-service-npm/remark-include-code
 
 ### Including the content of code files
 
-The `@it-service-npm/remark-include-code` package allows you
+The `@it-service-npm/remark-include-code` package allows you
 to embed code files within your Markdown documents.
 
 Async plugin using example:
@@ -215,7 +215,7 @@ After second file.
 
 ### Defining the code language
 
-You can define the code language with `language` attribute.
+You can define the code language with `language` attribute.
 
 Source files:
 
@@ -257,12 +257,12 @@ export function functionInIncluded1File(): void {
 
 ### Defining the code file encoding
 
-You can define the code file encoding with `encoding` attribute.
+You can define the code file encoding with `encoding` attribute.
 Default — `'utf8'`.
 
 > [!IMPORTANT]
 > With `useEditorConfig` attribute or plugin parameter
-> `charset` property value from `.editorconfig` file used for `encoding`
+> `charset` property value from `.editorconfig` file used for `encoding`
 
 Source files:
 
@@ -294,8 +294,8 @@ echo "Кириллический текст"
 
 ````
 
-Or You can use `charset` property value for encoding from `.editorconfig` file with
-`useEditorConfig` attribute or parameter.
+Or You can use `charset` property value for encoding from `.editorconfig` file with
+`useEditorConfig` attribute or parameter.
 
 main.md:
 
@@ -328,7 +328,7 @@ export async function remarkDirectiveUsingExample(
 
 ### Trim final newline
 
-You can trim final newline with `trimFinalNewline` attribute.
+You can trim final newline with `trimFinalNewline` attribute.
 
 Source files:
 
@@ -367,8 +367,8 @@ export function inFileWithFinalNewline(): void {
 
 ````
 
-And You can trim final newline for all `::include-code` directives with
-plugin options without `trimFinalNewline` attribute.
+And You can trim final newline for all `::include-code` directives with
+plugin options without `trimFinalNewline` attribute.
 
 Remark settings (.remarkrc.mjs):
 
@@ -412,13 +412,13 @@ export async function remarkDirectiveUsingExample(
 
 > \[!IMPORTANT]
 >
-> Package presets `remarkIncludeCodePreset` and `remarkIncludePresetSync`
-> enables `trimFinalNewline` setting by default.
+> Package presets `remarkIncludeCodePreset` and `remarkIncludePresetSync`
+> enables `trimFinalNewline` setting by default.
 
 ### Inserting a specified range of lines from a file
 
 You can insert a specified range of lines from a file
-with `fromLine` and `toLine` attributes.
+with `fromLine` and `toLine` attributes.
 
 Source files:
 
@@ -476,11 +476,11 @@ Hello. I am an main markdown file with `::include-code` directive.
 
 ### Tabs replacing with spaces
 
-`::include-code` replace tabs in code with spaces if `tabWidth` attribute specified.
+`::include-code` replace tabs in code with spaces if `tabWidth` attribute specified.
 
 > [!IMPORTANT]
 > With `useEditorConfig` attribute or plugin parameter
-> `tab_width` property value from `.editorconfig`
+> `tab_width` property value from `.editorconfig`
 > used for `tabWidth`.
 
 Source files:
@@ -534,8 +534,8 @@ Hello. I am an main markdown file with `::include-code` directive.
 ```
 ````
 
-Or You can use `tab_width` property value from `.editorconfig` file with
-`useEditorConfig` attribute or parameter.
+Or You can use `tab_width` property value from `.editorconfig` file with
+`useEditorConfig` attribute or parameter.
 
 main.md:
 
@@ -566,14 +566,14 @@ export async function remarkDirectiveUsingExample(
 
 ### Removing the extra indentation for a block of code
 
-You can remove extra indentation with `trimExtraIndent` attribute or parameter
+You can remove extra indentation with `trimExtraIndent` attribute or parameter
 (for example, if You insert a specified range of lines from a file
-with `fromLine` and `toLine` attributes).
+with `fromLine` and `toLine` attributes).
 
 > [!IMPORTANT]
 > `tabWidth` value expected
-> (or `tab_width` property value from `.editorconfig`
-> with `useEditorConfig` attribute or parameter).
+> (or `tab_width` property value from `.editorconfig`
+> with `useEditorConfig` attribute or parameter).
 
 Source files:
 
@@ -647,11 +647,11 @@ export async function remarkDirectiveUsingExample(
 
 ## API
 
-Please, read the [API reference](/docs/index.md).
+Please, read the [API reference](/docs/index.md).
 
 ### Public API Report File for “@it-service-npm/remark-include-code”
 
-> Do not edit this file. It is a report generated by [API Extractor](https://api-extractor.com/).
+> Do not edit this file. It is a report generated by [API Extractor](https://api-extractor.com/).
 
 ```ts
 
@@ -685,4 +685,4 @@ export const remarkIncludeCodeSync: Plugin<[IParameters?], Root>;
 
 ## License
 
-[MIT](LICENSE) © [Sergei S. Betke](https://github.com/sergey-s-betke)
+[MIT](LICENSE) © [Sergei S. Betke](https://github.com/sergey-s-betke)

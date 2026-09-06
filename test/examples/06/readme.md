@@ -1,7 +1,7 @@
 # Inserting a specified range of lines from a file
 
 You can insert a specified range of lines from a file
-with `fromLine` and `toLine` attributes.
+with `fromLine` and `toLine` attributes.
 
 Source files:
 

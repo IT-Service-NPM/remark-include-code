@@ -33,19 +33,17 @@ export abstract class Options<
   }
 
   protected assertNoUnknownAttributes(): void {
-    if (
-      (this._node.attributes !== undefined) &&
-      (this._node.attributes !== null)
-    ) {
-      const knownAttributes = this.keyofAttributes();
-      const unexpectedAttributes = Object.keys(this._node.attributes)
-        .filter((attribute) => !(knownAttributes.includes(attribute)));
-      if (unexpectedAttributes.length > 0) {
-        const attributesList = unexpectedAttributes
-          .map((s) => `\`${s}\``)
-          .join(', ');
-        this.fail(`unknown attribute(s): ${attributesList}`);
-      }
+    if (!this._node.attributes) {
+      return;
+    }
+    const knownAttributes = this.keyofAttributes();
+    const unexpectedAttributes = Object.keys(this._node.attributes)
+      .filter((attribute) => !(knownAttributes.includes(attribute)));
+    if (unexpectedAttributes.length > 0) {
+      const attributesList = unexpectedAttributes
+        .map((s) => `\`${s}\``)
+        .join(', ');
+      this.fail(`unknown attribute(s): ${attributesList}`);
     }
   }
 

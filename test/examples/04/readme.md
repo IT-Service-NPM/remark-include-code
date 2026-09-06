@@ -1,11 +1,11 @@
 # Defining the code file encoding
 
-You can define the code file encoding with `encoding` attribute.
+You can define the code file encoding with `encoding` attribute.
 Default — `'utf8'`.
 
 > [!IMPORTANT]
 > With `useEditorConfig` attribute or plugin parameter
-> `charset` property value from `.editorconfig` file used for `encoding`
+> `charset` property value from `.editorconfig` file used for `encoding`
 
 Source files:
 
@@ -37,8 +37,8 @@ echo "Кириллический текст"
 
 ````
 
-Or You can use `charset` property value for encoding from `.editorconfig` file with
-`useEditorConfig` attribute or parameter.
+Or You can use `charset` property value for encoding from `.editorconfig` file with
+`useEditorConfig` attribute or parameter.
 
 main.md:
 

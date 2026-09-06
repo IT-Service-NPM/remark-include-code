@@ -1,10 +1,10 @@
 # Tabs replacing with spaces
 
-`::include-code` replace tabs in code with spaces if `tabWidth` attribute specified.
+`::include-code` replace tabs in code with spaces if `tabWidth` attribute specified.
 
 > [!IMPORTANT]
 > With `useEditorConfig` attribute or plugin parameter
-> `tab_width` property value from `.editorconfig`
+> `tab_width` property value from `.editorconfig`
 > used for `tabWidth`.
 
 Source files:
@@ -58,8 +58,8 @@ Hello. I am an main markdown file with `::include-code` directive.
 ```
 ````
 
-Or You can use `tab_width` property value from `.editorconfig` file with
-`useEditorConfig` attribute or parameter.
+Or You can use `tab_width` property value from `.editorconfig` file with
+`useEditorConfig` attribute or parameter.
 
 main.md:
 

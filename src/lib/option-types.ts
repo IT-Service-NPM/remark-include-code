@@ -71,10 +71,11 @@ export abstract class Option<
   ): T | undefined
 
   protected assert(
-    condition: boolean,
+    // eslint-disable-next-line unicorn/consistent-boolean-name
+    isTrueAssertion: boolean,
     message: string
-  ): asserts condition is true {
-    if (!condition) {
+  ): asserts isTrueAssertion is true {
+    if (!isTrueAssertion) {
       this._messenger.fail(message);
     }
   }
@@ -89,11 +90,11 @@ export abstract class Option<
   }
 
   protected assertValueIsValid(
-    condition: boolean,
+    isTrueAssertion: boolean,
     value: string
-  ): asserts condition is true {
+  ): asserts isTrueAssertion is true {
     this.assert(
-      condition,
+      isTrueAssertion,
       `\`${this._name}\` option invalid value "${value}"`
     );
   }
@@ -127,20 +128,21 @@ export class Boolean<
   protected parse(
     value: string | null | undefined
   ): boolean | undefined {
-    if (typeof value === 'string') {
-      switch (value) {
-        case '':
-        case 'true': {
-          return true;
-        }
-        case 'false': {
-          return false;
-        }
-        default: {
-          this.assertValueIsValid(false, value);
-        }
-      };
+    if (typeof value !== 'string') {
+      return;
     }
+    switch (value) {
+      case '':
+      case 'true': {
+        return true;
+      }
+      case 'false': {
+        return false;
+      }
+      default: {
+        this.assertValueIsValid(false, value);
+      }
+    };
   }
 }
 
@@ -153,10 +155,11 @@ export class Integer<
   protected parse(
     value: string | null | undefined
   ): number | undefined {
-    if (typeof value === 'string') {
-      const _value = Number.parseInt(value);
-      this.assertValueIsValid(Number.isInteger(_value), value);
-      return _value;
+    if (typeof value !== 'string') {
+      return;
     }
+    const _value = Number.parseInt(value);
+    this.assertValueIsValid(Number.isSafeInteger(_value), value);
+    return _value;
   }
 }

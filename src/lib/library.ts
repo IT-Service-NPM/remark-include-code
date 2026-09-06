@@ -67,7 +67,7 @@ export function assertFileDirnameIsDefined(
 export function assertErrorIsVFileMessage(
   error: any
 ): asserts error is VFileMessage & { fatal: false } {
-  if (!((error instanceof VFileMessage) && (!error.fatal))) {
+  if (!(error instanceof VFileMessage) || error.fatal) {
     throw error;
   }
 }

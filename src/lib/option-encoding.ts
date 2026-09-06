@@ -10,9 +10,10 @@ export class EncodingOption<
   protected parse(
     value: string | null | undefined
   ): Encoding | undefined {
-    if (typeof value === 'string') {
-      this.assertValueIsValid(encodingExists(value), value);
-      return value;
+    if (typeof value !== 'string') {
+      return;
     }
+    this.assertValueIsValid(encodingExists(value), value);
+    return value;
   }
 }

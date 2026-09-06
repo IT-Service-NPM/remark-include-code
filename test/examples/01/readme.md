@@ -1,6 +1,6 @@
 # Including the content of code files
 
-The `@it-service-npm/remark-include-code` package allows you
+The `@it-service-npm/remark-include-code` package allows you
 to embed code files within your Markdown documents.
 
 Async plugin using example:

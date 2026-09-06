@@ -1,13 +1,13 @@
 # Removing the extra indentation for a block of code
 
-You can remove extra indentation with `trimExtraIndent` attribute or parameter
+You can remove extra indentation with `trimExtraIndent` attribute or parameter
 (for example, if You insert a specified range of lines from a file
-with `fromLine` and `toLine` attributes).
+with `fromLine` and `toLine` attributes).
 
 > [!IMPORTANT]
 > `tabWidth` value expected
-> (or `tab_width` property value from `.editorconfig`
-> with `useEditorConfig` attribute or parameter).
+> (or `tab_width` property value from `.editorconfig`
+> with `useEditorConfig` attribute or parameter).
 
 Source files:
 

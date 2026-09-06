@@ -123,6 +123,7 @@ export class CodeFileContent {
     if (this.attributes.tabWidth !== undefined) {
       this._content = this._content.replaceAll(
         this.buildTabReplacementPattern(this.attributes.tabWidth),
+        // eslint-disable-next-line unicorn/no-unsafe-string-replacement
         ' '.repeat(this.attributes.tabWidth)
       );
     }
@@ -135,7 +136,7 @@ export class CodeFileContent {
       (this.attributes.tabWidth !== undefined)
     ) {
       const indentWidths = Array.from(
-        // eslint-disable-next-line sonarjs/slow-regex
+        // eslint-disable-next-line sonarjs/super-linear-regex
         this._content.matchAll(/^\s*(?=\S)/gm),
         (match): number => match[0].length
       );
@@ -156,9 +157,8 @@ export class CodeFileContent {
       const errorMessage = `::include-code, file "${this.attributes.file}" not found`;
       if (this.attributes.optional) {
         throw this.file.info(errorMessage, this.node);
-      } else {
-        this.file.fail(errorMessage, this.node);
       }
+      this.file.fail(errorMessage, this.node);
     } else {
       throw error;
     }

@@ -107,8 +107,11 @@ export default defineConfig([
       '@typescript-eslint/consistent-indexed-object-style': 'off',
       'n/no-missing-import': ['error', {
         'ignoreTypeImport': true
-      }]
-    },
+      }],
+      'unicorn/no-this-outside-of-class': 'off',
+      'unicorn/consistent-class-member-order': 'warn',
+      'unicorn/no-unsafe-string-replacement': 'warn'
+    }
   },
   {
     files: ['test/**/*.ts'],

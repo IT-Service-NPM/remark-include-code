@@ -1,6 +1,6 @@
 # Defining the code language
 
-You can define the code language with `language` attribute.
+You can define the code language with `language` attribute.
 
 Source files:
 
